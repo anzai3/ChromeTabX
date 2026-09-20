@@ -12,6 +12,12 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
  const title=doc.createElement('strong'),close=doc.createElement('button');close.type='button';close.textContent='×';
  const note=doc.createElement('p'),frameHost=doc.createElement('div'),open=doc.createElement('button');open.type='button';
  frameHost.className='web-preview-viewport';
+ const loading=doc.createElement('div');loading.className='web-preview-loading';loading.setAttribute('role','status');loading.hidden=true;
+ const spinner=doc.createElement('span');spinner.className='web-preview-spinner';spinner.setAttribute('aria-hidden','true');
+ const loadingText=doc.createElement('span');loading.append(spinner,loadingText);
+ let loadTimer;
+ function stopLoading(){clearTimeout(loadTimer);loading.hidden=true;frameHost.setAttribute('aria-busy','false');}
+
  const toolbar=doc.createElement('div');toolbar.className='web-preview-tools';
  const zoomLabel=doc.createElement('label'),zoom=doc.createElement('select'),zoomText=doc.createElement('span');
  for(const value of [70,80,90,100]){const option=doc.createElement('option');option.value=String(value);option.textContent=`${value}%`;zoom.append(option);}
@@ -24,11 +30,11 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
  textPreview.onclick=()=>{const button=trigger;hide();button?.click();};
  let trigger=null,showTimer,hideTimer,epoch=0,tab=null;
  const words=()=>locale.locale.startsWith('zh')?{
-  title:'网页预览',close:'关闭预览',open:'打开原标签',zoom:'缩放',text:'文字预览',
+  loading:'正在加载网页…',slow:'网页加载较慢，可稍后查看或打开原标签。',title:'网页预览',close:'关闭预览',open:'打开原标签',zoom:'缩放',text:'文字预览',
   note:'临时加载网页；若空白、登录失败或网站禁止嵌入，请打开原标签。',
   unavailable:'该页面无法嵌入预览，请打开原标签。'
- }:{title:'Web preview',close:'Close preview',open:'Open original tab',zoom:'Zoom',text:'Text preview',note:'Loads a temporary page. If blank, signed out, or blocked by the site, open the original tab.',unavailable:'This page cannot be embedded. Open the original tab.'};
- function hide(){clearTimeout(showTimer);clearTimeout(hideTimer);epoch++;panel.hidden=true;frameHost.replaceChildren();trigger=null;tab=null;}
+ }:{loading:'Loading page…',slow:'This page is taking longer to load. Wait or open the original tab.',title:'Web preview',close:'Close preview',open:'Open original tab',zoom:'Zoom',text:'Text preview',note:'Loads a temporary page. If blank, signed out, or blocked by the site, open the original tab.',unavailable:'This page cannot be embedded. Open the original tab.'};
+ function hide(){stopLoading();clearTimeout(showTimer);clearTimeout(hideTimer);epoch++;panel.hidden=true;frameHost.replaceChildren();trigger=null;tab=null;}
  function leave(){clearTimeout(showTimer);clearTimeout(hideTimer);hideTimer=setTimeout(hide,220);}
  async function show(button){
   if(!button.isConnected || doc.querySelector('dialog[open]'))return;
@@ -36,6 +42,8 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
   hide();trigger=button;const token=++epoch;const w=words();
   title.textContent=node.dataset.title||w.title;panel.setAttribute('aria-label',w.title);close.setAttribute('aria-label',w.close);open.textContent=w.open;open.disabled=true;note.textContent=w.note;
   zoomText.textContent=w.zoom;zoom.setAttribute('aria-label',w.zoom);textPreview.textContent=w.text;
+  loadingText.textContent=w.loading;loading.hidden=false;frameHost.replaceChildren(loading);frameHost.setAttribute('aria-busy','true');
+  loadTimer=setTimeout(()=>{if(token===epoch){stopLoading();note.textContent=w.slow;}},15000);
   panel.hidden=false;
   const rect=button.getBoundingClientRect(),width=panel.offsetWidth,height=panel.offsetHeight;
   let left=rect.right+10;
@@ -48,13 +56,15 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
    if(token!==epoch)return;
    tab=target;open.disabled=!live;
    if(!isGenericTitle(target.title))title.textContent=target.title;
-   const url=previewUrl(target.url);if(!url){note.textContent=w.unavailable;return;}
+   const url=previewUrl(target.url);if(!url){stopLoading();note.textContent=w.unavailable;return;}
    const frame=doc.createElement('iframe');frame.title=w.title;
    // Isolate external content; no popups, top navigation, forms, or downloads.
    frame.setAttribute('sandbox','allow-scripts allow-same-origin');frame.referrerPolicy='no-referrer';
+   frame.addEventListener('load',()=>{if(token===epoch)stopLoading();},{once:true});
+   frame.addEventListener('error',()=>{if(token===epoch){stopLoading();note.textContent=w.unavailable;}},{once:true});
    frame.src=url;frameHost.append(frame);applyZoom();
    // Cross-origin load events cannot prove successful rendering. Keep the fallback visible.
-  }catch{if(token===epoch)note.textContent=w.unavailable;}
+  }catch{if(token===epoch){stopLoading();note.textContent=w.unavailable;}}
  }
  const over=event=>{
   if(event.pointerType!=='mouse')return;
