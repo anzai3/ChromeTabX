@@ -1,3 +1,4 @@
+import {scopeTabs,countCategories} from './tab-scope.js';
 import {updateMetrics} from './metrics.js';
 import {titleHierarchy,titleSubject} from './title-rules.js';
 import {findPageText, scanTabs} from './content-search.js';
@@ -33,7 +34,7 @@ async function refresh() {
 }
 function filtered() {
  const dup = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));
- return tabs.filter(t => (view === 'all' || (view === 'duplicates' ? dup.has(t.id) : view === 'pinned' ? t.pinned : view === 'inactive' ? isInactive(t,inactiveDays) : view.startsWith('sub:') ? hierarchy.membership.get(view.slice(4))?.ids.includes(t.id) : view.startsWith('category:') && (titleGroups.get(t.id)||'其他')===view.slice(9))) && (selectedWindow === 'all' || t.windowId === Number(selectedWindow)) && (`${t.title} ${t.url}`.toLowerCase().includes(query.trim().toLowerCase()) || (bodyMatches.get(t.id)?.url === t.url && bodyMatches.get(t.id)?.matched))).sort((a,b)=>view==='inactive' ? a.lastAccessed-b.lastAccessed : 0);
+ return scopeTabs(tabs,selectedWindow,query,bodyMatches).filter(t => (view === 'all' || (view === 'duplicates' ? dup.has(t.id) : view === 'pinned' ? t.pinned : view === 'inactive' ? isInactive(t,inactiveDays) : view.startsWith('sub:') ? hierarchy.membership.get(view.slice(4))?.ids.includes(t.id) : view.startsWith('category:') && (titleGroups.get(t.id)||'其他')===view.slice(9)))).sort((a,b)=>view==='inactive' ? a.lastAccessed-b.lastAccessed : 0);
 }
 function scheduleSearch() {
  clearTimeout(searchTimer);
@@ -63,8 +64,9 @@ function render() {
  const dupeIds = duplicateIds(tabs), dupSet = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));
  $('#dedupe-count').textContent = dupeIds.length;
  $('#dedupe').disabled = !dupeIds.length || closing;
- const categoryNames=[...new Set(titleGroups.values())].sort((a,b)=>a==='其他'?1:b==='其他'?-1:tabs.filter(t=>titleGroups.get(t.id)===b).length-tabs.filter(t=>titleGroups.get(t.id)===a).length);
- $('#title-categories').innerHTML=`<button data-view="all" style="${colorStyle('全部')}" class="${view==='all'?'active':''}"><span>全部</span><span class="count">${tabs.length}</span></button>`+categoryNames.map(name=>`<button style="${colorStyle(name)}" data-view="${esc('category:'+name)}" class="${view==='category:'+name?'active':''}"><span>${esc(name)}</span><span class="count">${tabs.filter(t=>(titleGroups.get(t.id)||'其他')===name).length}</span></button>${(hierarchy.children.get(name)||[]).map(child=>`<button style="${colorStyle(name,child.name)}" data-view="${esc('sub:'+child.id)}" class="subcategory ${view==='sub:'+child.id?'active':''}"><span>${esc(child.name)}</span><span class="count">${child.ids.length}</span></button>`).join('')}`).join('');
+ const counts=countCategories(scopeTabs(tabs,selectedWindow,query,bodyMatches),hierarchy);
+ const categoryNames=[...new Set(titleGroups.values())].sort((a,b)=>a==='其他'?1:b==='其他'?-1:(counts.primary.get(b)||0)-(counts.primary.get(a)||0));
+ $('#title-categories').innerHTML=`<button data-view="all" style="${colorStyle('全部')}" class="${view==='all'?'active':''}"><span>全部</span><span class="count">${counts.all}</span></button>`+categoryNames.map(name=>`<button style="${colorStyle(name)}" data-view="${esc('category:'+name)}" class="${view==='category:'+name?'active':''}"><span>${esc(name)}</span><span class="count">${counts.primary.get(name)||0}</span></button>${(hierarchy.children.get(name)||[]).map(child=>`<button style="${colorStyle(name,child.name)}" data-view="${esc('sub:'+child.id)}" class="subcategory ${view==='sub:'+child.id?'active':''}"><span>${esc(child.name)}</span><span class="count">${counts.secondary.get(child.id)||0}</span></button>`).join('')}`).join('');
  const title = ({all:'全部标签',duplicates:'重复标签',pinned:'固定标签',inactive:'久未访问'})[view] || (view.startsWith('sub:')?hierarchy.membership.get(view.slice(4))?.name:view.slice(9));
  const visible = filtered(); $('#view-title').innerHTML=`${esc(title)} <span>${visible.length}</span>`;
  $('#view-description').textContent=view==='inactive'?`查看至少 ${inactiveDays} 天没有切换到的标签。`:view==='duplicates'?'相同网址，只留一个。清理操作覆盖所有窗口。':'搜索和管理所有打开的网页。';

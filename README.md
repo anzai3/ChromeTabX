@@ -115,7 +115,7 @@ Search reads loaded, visible text in the main frame. Protected browser pages, re
 
 Local word segmentation extracts shared keywords and filters common filler words, numeric fragments, and known site suffixes. At least two tabs must share a keyword to form a primary category; remaining tabs appear under Other. Each tab has one primary category.
 
-Groups with at least six tabs can expose up to three secondary categories based on additional shared keywords. Secondary categories can overlap, so their counts should not be added together. Categories are computed from all managed tabs, while the window filter limits displayed results. This is keyword grouping, not AI semantic classification.
+Groups with at least six tabs can expose up to three secondary categories based on additional shared keywords. Secondary categories can overlap, so their counts should not be added together. Category membership is computed from all managed tabs. Sidebar counts and displayed cards both respect the selected window and search query; categories outside that scope show zero. This is keyword grouping, not AI semantic classification.
 
 ### Last-access information
 
