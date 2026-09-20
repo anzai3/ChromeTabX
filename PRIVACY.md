@@ -6,6 +6,9 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 
 ## Information processed on your device
 
+- Recent browsing history (up to 500 URLs visited in the last 30 days and their visit timestamps) is read locally to rank five frequent websites. History results stay in memory. Custom shortcut names and URLs are saved in local extension storage until reset or uninstalled; they are not uploaded.
+
+
 - Open-tab titles, URLs, window IDs and tab status are used to display, search, categorize and manage your tabs. Chrome-provided last-access information may be used for tab filtering.
 - Readable page text, document headings and metadata are read for content search, summaries and more useful titles. These values are processed in the extension's memory.
 - Page screenshots are captured for card thumbnails, including potentially personal content visible on the page. Only eligible active pages in the focused Chrome window are captured during ordinary browsing. The extension does not attach a debugger or load sleeping tabs for screenshots.
@@ -36,3 +39,5 @@ For privacy questions, open an issue at https://github.com/anzai3/ChromeTabX/iss
 ChromeTabX 在本地处理打开标签的标题、网址、状态、可读取正文和网页截图，用于搜索、分类、标题提取和缩略图。截图可能包含网页上的个人内容，但不会上传给开发者。仅在正常浏览当前窗口的已加载页面时截图，不连接调试接口，也不为截图加载休眠标签。缩略图保存在会话缓存，六小时后过期并受容量限制；关闭标签会删除对应条目，重启 Chrome 或重新加载扩展会清空会话缓存。语言偏好保存在本地，卸载扩展后删除。
 
 预览会访问原网站，可能使用已有登录状态；网站自身的隐私政策适用。可选 macOS 辅助程序只在本机读取 Chrome 进程资源统计，商店安装包不包含该程序。扩展没有广告、分析追踪或开发者数据收集服务，不出售浏览数据。隐私问题可通过上述 GitHub Issues 联系，请勿公开提交私人网页内容。
+
+常用网址功能读取最近 30 天最多 500 个近期网址及访问时间，在本机统计推荐。历史数据仅在内存处理；自定义名称和链接保存在扩展本地存储，恢复推荐或卸载后删除，不上传。

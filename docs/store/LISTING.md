@@ -16,6 +16,7 @@ ChromeTabX turns your new-tab page into a searchable dashboard of the tabs you a
 
 • Search titles, URLs and readable text in loaded pages.
 • See tabs from all Chrome windows together.
+• Open five frequent websites beside search; customize each shortcut.
 • Browse automatically generated topic categories.
 • Preview a page before switching to its original tab.
 • Review duplicate URLs and close extra copies.
@@ -45,6 +46,7 @@ ChromeTabX 把新标签页变成已打开网页的搜索和管理页面。输入
 
 • 搜索标题、网址和已加载页面的可读取正文。
 • 集中查看所有 Chrome 窗口的标签。
+• 搜索框旁显示五个常用网址，每个都能自定义。
 • 按自动生成的主题分类浏览。
 • 先预览网页，再切换到原标签。
 • 检查重复网址，关闭多余页面。
@@ -71,6 +73,7 @@ ChromeTabX 把新标签页变成已打开网页的搜索和管理页面。输入
 
 | Permission | Explanation for the reviewer |
 | --- | --- |
+| history | Read up to 500 recently visited URLs and visit timestamps to rank frequent websites over the last 30 days, locally only. |
 | tabs | List open tabs across windows, read titles/URLs/status, switch to the chosen tab, and close tabs or confirmed duplicate URLs. |
 | scripting | Read document titles, headings, metadata and readable text from existing tabs for local search, summaries and improved titles. |
 | storage | Cache small page thumbnails and capture state locally in session storage; no server upload. |

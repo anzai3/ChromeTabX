@@ -210,3 +210,7 @@ python3 -m http.server 8765
 ## Chrome 扩展商店上架准备
 
 1.6.6 统一扩展名称为 ChromeTabX，新增[隐私政策](PRIVACY.md)、[中英文商店介绍](docs/store/LISTING.md)和仅包含运行文件的打包脚本。运行 `python3 scripts/package-store.py`，安装包输出到不纳入 Git 的 `releases/` 目录。目前尚未上传或提交审核，详见[提交状态](docs/store/STATUS.md)。
+
+## 1.7.0 — 常用网址
+
+搜索框缩短，旁边展示五个可独立编辑的常用网址。默认读取最近 30 天内最多 500 个近期网址，按该时间段的访问次数、以网站来源合并排序。每个位置可修改名称和链接，也可恢复推荐；自定义内容保存在本机并同步到其他已打开的管理页。新增 history 权限仅用于本地推荐，不上传历史记录。

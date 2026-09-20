@@ -210,3 +210,7 @@ Version 1.6.6 removes debugger-based background screenshots and the debugger/ala
 
 
 Thumbnail cards read cached images directly from session storage. Missing images do not show a perpetual loading message. The manager offers an Apply update button when the background version is older than the installed source files.
+
+## 1.7.0 — Frequent sites
+
+A shorter search field shares its row with five editable website shortcuts. Recommendations count visits in the past 30 days across up to 500 recently visited URLs, grouped by website origin. Each slot can be customized or reset to a recommendation. Custom names and URLs stay in local extension storage and sync between open manager pages on this device. The history permission is used only for local recommendations; no history is uploaded.
