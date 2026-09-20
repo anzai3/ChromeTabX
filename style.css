@@ -76,3 +76,5 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 #web-preview .web-preview-viewport{flex:1;min-height:0;overflow:hidden;border:1px solid #e2e8f0;border-radius:6px}#web-preview .web-preview-viewport iframe{display:block;max-width:none;border:0;border-radius:0;transform-origin:top left}#web-preview .web-preview-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;flex:none}#web-preview .web-preview-tools label{display:flex;align-items:center;gap:6px;color:#64748b;font-size:12px;margin-right:auto}#web-preview .web-preview-tools select,#web-preview .web-preview-tools button{font-size:12px;padding:6px 8px}
 
 #content .card-top .card-close{position:static;display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;width:28px;height:28px;padding:5px;margin:0 0 0 auto;border:0;border-radius:50%;background:transparent;color:#64748b}#content .card-top .card-close:hover{background:#e8eaed;color:#202124}#content .card-close svg{display:block;pointer-events:none}
+
+.brand-icon{display:block;flex-shrink:0;width:46px;height:46px}
