@@ -252,3 +252,7 @@ Shortcut icons align to the right. Existing tab icons and Chrome’s page-specif
 ## 1.7.10
 
 Shortcut spacing is more compact: 20 px icons in 32 px targets with 4 px gaps, aligned to the right.
+
+## 1.7.11
+
+Drag shortcut icons onto another slot to reorder them. The order is saved locally and shared by open manager pages. External URL drops still add or replace a shortcut.

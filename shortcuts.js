@@ -9,7 +9,7 @@ export const DEFAULT_SITES = [
 export function resolveSlots(defaults,custom){
  const used=new Set(Object.values(custom).map(v=>v?.url).filter(Boolean));
  const remaining=defaults.filter(v=>!used.has(v.url));
- return Array.from({length:5},(_,i)=>custom[i]||remaining.shift()||null);
+ return Array.from({length:5},(_,i)=>Object.hasOwn(custom,i)?custom[i]:remaining.shift()||null);
 }
 // Dragged text must be an explicit web URL, never arbitrary text or executable schemes.
 export function droppedSite(transfer) {
@@ -19,4 +19,10 @@ export function droppedSite(transfer) {
   const url=safeUrl(value);if(url)return {url,name:new URL(url).hostname.replace(/^www\./,'')};
  }
  return null;
+}
+
+export function moveShortcut(slots,from,to){
+ const result=[...slots];
+ if(!Number.isInteger(from)||!Number.isInteger(to)||from<0||to<0||from>=slots.length||to>=slots.length||!slots[from])return result;
+ const [site]=result.splice(from,1);result.splice(to,0,site);return result;
 }

@@ -1,16 +1,16 @@
 # Store submission status
 
-Updated: 2026-09-20. Version: 1.7.10. **Not uploaded, submitted or published.**
+Updated: 2026-09-20. Version: 1.7.11. **Not uploaded, submitted or published.**
 
 ## Prepared
 
-- Runtime-only ZIP: run `python3 scripts/package-store.py` to create `releases/ChromeTabX-1.7.10-store.zip`.
+- Runtime-only ZIP: run `python3 scripts/package-store.py` to create `releases/ChromeTabX-1.7.11-store.zip`.
 - English listing with Simplified Chinese translation: [LISTING.md](LISTING.md).
 - Public privacy policy: [PRIVACY.md](../../PRIVACY.md).
 - Permission explanations and reviewer instructions in the listing document.
 - Existing extension icons, including a 128×128 PNG.
 - Small promotional artwork: `promo-440x280.png` (brand artwork, not a product screenshot).
-- Automated validation: 52 tests passed; ZIP resources and local module imports validated.
+- Automated validation: 54 tests passed; ZIP resources and local module imports validated.
 
 ## Remaining before submission
 

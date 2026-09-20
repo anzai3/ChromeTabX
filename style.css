@@ -107,3 +107,5 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 
 #shortcuts{margin-left:auto;justify-content:flex-end;max-width:100%}
 .shortcut-feedback:not(:empty){flex-basis:100%;text-align:right}
+
+#shortcuts .shortcut.dragging{opacity:.4}

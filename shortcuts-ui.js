@@ -1,7 +1,7 @@
 import {iconCandidates,loadShortcutIcon,discoverIcons} from './shortcut-icons.js';
 import {i18n} from './i18n.js';
 import {createI18n} from './packages/app-i18n/index.js';
-import {safeUrl,resolveSlots,DEFAULT_SITES,droppedSite} from './shortcuts.js';
+import {safeUrl,resolveSlots,DEFAULT_SITES,droppedSite,moveShortcut} from './shortcuts.js';
 const messages={en:{drop:'Drag a website here',dropped:'Shortcut saved',badDrop:'Drag an HTTP or HTTPS link here.',title:'Frequent sites',add:'Add site',edit:'Edit shortcut {number}',heading:'Edit bookmark',name:'Name',url:'Website URL',save:'Save',cancel:'Cancel',reset:'Use default',invalid:'Enter a name and a valid HTTP or HTTPS URL.',error:'Could not save. Please try again.'},'zh-CN':{drop:'拖拽网址到这里',dropped:'快捷网址已保存',badDrop:'请拖入 HTTP 或 HTTPS 网页链接。',title:'常用网址',add:'添加网址',edit:'编辑快捷网址 {number}',heading:'编辑书签',name:'名称',url:'网址',save:'保存',cancel:'取消',reset:'恢复默认',invalid:'请填写名称和有效的 HTTP 或 HTTPS 网址。',error:'保存失败，请重试。'}};
 const strings=createI18n({messages,preference:i18n.locale});
 const root=document.getElementById('shortcuts'),dialog=document.createElement('dialog');
@@ -12,6 +12,7 @@ const feedback=document.createElement('span');feedback.className='shortcut-feedb
 const nameInput=dialog.querySelector('#shortcut-name'),urlInput=dialog.querySelector('#shortcut-url'),notice=dialog.querySelector('[role="status"]');
 let defaults=DEFAULT_SITES,custom={},slot=0,iconTabs=[];
 const storage=globalThis.chrome?.storage?.local;
+let dragging=null;
 function render(){
  root.replaceChildren();root.setAttribute('aria-label',strings.t('title'));root.title=strings.t('title');
  resolveSlots(defaults,custom).forEach((site,index)=>{
@@ -19,16 +20,30 @@ function render(){
   const link=document.createElement(site?'a':'button');link.className='shortcut-link';
   link.setAttribute('aria-label',site?site.name:strings.t('add'));
   if(site){
+   link.draggable=true;
+   link.ondragstart=e=>{dragging=index;e.dataTransfer.effectAllowed='copyMove';e.dataTransfer.setData('text/uri-list',site.url);group.classList.add('dragging');};
+   link.ondragend=()=>{dragging=null;root.querySelectorAll('.drag-over,.dragging').forEach(node=>node.classList.remove('drag-over','dragging'));};
    link.href=site.url;link.target='_blank';link.rel='noopener noreferrer';link.title=`${site.name}\n${site.url}`;
    const fallback=document.createElement('span');fallback.textContent='◎';fallback.setAttribute('aria-hidden','true');link.append(fallback);
    const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.hidden=true;icon.draggable=false;link.append(icon);
    const candidates=iconCandidates(site.url,iconTabs,globalThis.chrome?.runtime);
    loadShortcutIcon(icon,fallback,candidates,()=>discoverIcons(site.url));
   }else {link.textContent='+';link.title=strings.t('drop');link.onclick=()=>edit(index);}
-  group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect='copy';group.classList.add('drag-over');}};
+  group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect=dragging===null?'copy':'move';group.classList.add('drag-over');}};
   group.ondragleave=e=>{if(!group.contains(e.relatedTarget))group.classList.remove('drag-over');};
   group.ondrop=async e=>{
-   e.preventDefault();group.classList.remove('drag-over');const value=droppedSite(e.dataTransfer);
+   e.preventDefault();group.classList.remove('drag-over');
+   if(dragging!==null){
+    const from=dragging;dragging=null;if(from===index)return;
+    const moved=moveShortcut(resolveSlots(defaults,custom),from,index);
+    try{
+     if(!storage)throw Error();
+     await storage.set(Object.fromEntries(moved.map((value,i)=>[`shortcut-slot-${i}`,value])));
+     custom=Object.fromEntries(moved.map((value,i)=>[i,value]));render();feedback.textContent=strings.t('dropped');
+    }catch{feedback.textContent=strings.t('error');}
+    return;
+   }
+   const value=droppedSite(e.dataTransfer);
    if(!value){feedback.textContent=strings.t('badDrop');return;}
    try{if(!storage)throw Error();await storage.set({[`shortcut-slot-${index}`]:value});custom[index]=value;render();feedback.textContent=strings.t('dropped');}
    catch{feedback.textContent=strings.t('error');}
@@ -56,7 +71,7 @@ dialog.querySelector('[data-action="reset"]').onclick=()=>save(true);
 dialog.querySelector('[data-action="cancel"]').onclick=()=>dialog.close();
 i18n.subscribe(()=>{strings.setPreference(i18n.locale);render();});
 async function load(){
- if(storage){const data=await storage.get(Array.from({length:5},(_,i)=>`shortcut-slot-${i}`));custom={};for(let i=0;i<5;i++){const value=data[`shortcut-slot-${i}`];if(value?.name&&safeUrl(value.url||''))custom[i]=value;}}
+ if(storage){const data=await storage.get(Array.from({length:5},(_,i)=>`shortcut-slot-${i}`));custom={};for(let i=0;i<5;i++){const value=data[`shortcut-slot-${i}`];if(value===null||(value?.name&&safeUrl(value.url||'')))custom[i]=value;}}
  render();
 }
 render();load().catch(()=>{});
