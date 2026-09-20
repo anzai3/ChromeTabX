@@ -28,7 +28,7 @@ flowchart TD
     C1 --> C2[Click to return to the original tab]
     D --> D1[All windows in one view]
     D --> D2[Topic categories / up to 3 subcategories]
-    D --> D3[Card view / pin important tabs]
+    D --> D3[Browse tabs in cards]
     E --> E1[Review duplicate URLs / keep one copy]
     E --> E2[Close pages you no longer need]
     C2 --> F[Less time searching / more focus]
@@ -65,7 +65,7 @@ Your pages stay in Chrome. No account or cloud service is needed.
 - **Search beyond titles.** Match titles, URLs, and readable text in loaded pages. Content matches include a short excerpt. Press `/` to focus search.
 - **Automatic category cloud.** Shared title keywords become categories. Larger groups can show up to three secondary categories, with consistent colors for browsing.
 - **Keep one copy of a URL.** Preview duplicate tabs before confirming cleanup across windows.
-- **Simple tab controls.** Open, close, pin, or unpin tabs, in a card view.
+- **Simple tab controls.** Open, preview, or close tabs in a card view.
 - **English and Simplified Chinese.** Follow Chrome's UI language by default, or switch instantly without losing search and filters.
 - **Optional Chrome metrics on macOS.** A local helper displays total Chrome memory and CPU usage.
 
