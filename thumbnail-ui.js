@@ -22,3 +22,8 @@ function discover(){
  root.querySelectorAll('[data-thumbnail]').forEach(img=>{if(!watched.has(img)){watched.add(img);observer.observe(img.closest('.card'));}});
 }
 if(live){new MutationObserver(discover).observe(root,{childList:true});discover();}
+
+if(live)chrome.storage.onChanged.addListener((changes,area)=>{
+ if(area!=='session')return;
+ for(const img of watched)if(changes[`thumb:${img.dataset.thumbnail}`])observer.observe(img.closest('.card'));
+});

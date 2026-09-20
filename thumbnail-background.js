@@ -1,3 +1,4 @@
+import {nextThumbnailTab,captureBackgroundTab} from './background-thumbnails.js';
 import {captureThumbnail,validThumbnail} from './thumbnails.js';
 let timer,busy=false;
 async function resize(data) {
@@ -21,7 +22,7 @@ function schedule(tabId){
 }
 chrome.tabs.onActivated.addListener(({tabId})=>schedule(tabId));
 chrome.tabs.onUpdated.addListener((id,change,tab)=>{if(tab.active && change.status==='complete')schedule(id);});
-chrome.tabs.onRemoved.addListener(id=>chrome.storage.session.remove(`thumb:${id}`).catch(()=>{}));
+chrome.tabs.onRemoved.addListener(id=>chrome.storage.session.remove([`thumb:${id}`,`thumb-attempt:${id}`]).catch(()=>{}));
 chrome.runtime.onMessage.addListener((message,sender,reply)=>{
  if(sender.id!==chrome.runtime.id || !sender.url?.startsWith(chrome.runtime.getURL('newtab.html')) || message?.type!=='thumbnail')return;
  (async()=>{
@@ -31,4 +32,18 @@ chrome.runtime.onMessage.addListener((message,sender,reply)=>{
   return validThumbnail(entry,tab.url)?entry.image:null;
  })().then(reply,()=>reply(null));
  return true;
+});
+
+// One job per alarm; MV3 can sleep between jobs. Never select or focus a tab.
+chrome.alarms.create('thumbnail-queue',{periodInMinutes:0.5});
+chrome.alarms.onAlarm.addListener(async alarm=>{
+ if(alarm.name!=='thumbnail-queue' || busy)return;
+ busy=true;
+ try {
+  const cache=await chrome.storage.session.get(null);
+  const tab=nextThumbnailTab(await chrome.tabs.query({}),cache);
+  if(!tab)return;
+  await chrome.storage.session.set({[`thumb-attempt:${tab.id}`]:Date.now()});
+  await captureBackgroundTab(chrome,tab,resize);
+ }catch{}finally{busy=false;}
 });

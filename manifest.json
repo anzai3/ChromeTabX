@@ -1,13 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Tab Matrix · 标签矩阵",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "集中管理大量标签，快速搜索页面、按主题分类并清理重复网址，减少翻找和不必要的页面。",
   "permissions": [
     "tabs",
     "scripting",
     "nativeMessaging",
-    "storage"
+    "storage",
+    "alarms",
+    "debugger"
   ],
   "chrome_url_overrides": {
     "newtab": "newtab.html"
