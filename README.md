@@ -83,6 +83,12 @@ Requires **Chrome 121 or later**. The extension is installed from source; the op
 
 After updating the source, click **Reload** on the extension card and open a new tab. If you cloned the repository, use `git pull --ff-only` to download updates.
 
+## Page summaries and preview
+
+Cards show a one-line page description or opening text. Click **Preview** to open a floating text preview without switching tabs. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
+
+This is a text excerpt, not an AI-written summary, screenshot or live embedded page. Restricted, empty or discarded pages may be unavailable. The extension does not wake discarded tabs or send page content to a server.
+
 ## Everyday use
 
 Type in the search box to find a page, select a category to narrow the results, and click a page title to switch to that tab and its window. The window selector starts with the current window; choose **All windows** when needed.
@@ -144,8 +150,8 @@ No account, analytics, remote scripts, external fonts, or cloud processing are u
 | Permission | Purpose |
 | --- | --- |
 | `tabs` | Read tab titles and URLs; manage tabs across windows. |
-| `scripting` | Search readable page text on demand. |
-| HTTP/HTTPS host access | Allow content searches on permitted websites. |
+| `scripting` | Read page text for search, visible-card summaries, and previews. |
+| HTTP/HTTPS host access | Allow page-text reading on permitted websites. |
 | `nativeMessaging` | Connect to the optional local metrics helper. |
 
 Incognito access is not enabled by default. The extension's own new-tab pages are excluded from the managed tab list.

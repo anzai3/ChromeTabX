@@ -18,8 +18,10 @@
 </main>
 <dialog id="confirm-dialog"><form method="dialog"><div class="eyebrow">整理重复页面</div><h2>清理重复标签</h2><p id="confirm-text"></p><p class="dialog-note">按完整网址匹配，仅处理 HTTP / HTTPS 页面。优先保留固定页、当前活动页，再保留最近使用的一页。关闭可能丢失未提交内容。</p><div id="duplicate-preview"></div><div class="dialog-actions"><button value="cancel">取消</button><button id="confirm-close" value="confirm" class="primary">确认清理</button></div></form></dialog>
 <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="settings-header"><h2 id="settings-title">设置</h2><button id="close-settings" aria-label="关闭设置">×</button></div><div class="settings-content"><label class="language-picker"><span>语言</span><select id="language" aria-label="语言"><option data-language-ui value="system">跟随系统</option><option value="zh-CN">简体中文</option><option value="en">English</option></select></label><p id="language-hint" data-language-ui class="language-hint"></p><span id="language-status" data-language-ui class="sr-only" role="status"></span><section id="support" class="support" data-language-ui hidden></section></div></dialog>
+<dialog id="page-preview" data-language-ui aria-labelledby="preview-title"><div class="settings-header"><h2 id="preview-title"></h2><button id="preview-close" aria-label="关闭预览">×</button></div><p id="preview-url"></p><small id="preview-note"></small><p id="preview-body"></p><button id="preview-open">打开原标签</button></dialog>
 <div id="toast" role="status" hidden></div>
 <script type="module" src="i18n.js"></script>
 <script type="module" src="app.js"></script>
 <script type="module" src="support.js"></script>
+<script type="module" src="preview-ui.js"></script>
 </body></html>
