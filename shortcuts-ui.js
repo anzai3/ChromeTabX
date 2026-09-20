@@ -1,3 +1,4 @@
+import {iconCandidates,loadShortcutIcon} from './shortcut-icons.js';
 import {i18n} from './i18n.js';
 import {createI18n} from './packages/app-i18n/index.js';
 import {safeUrl,resolveSlots,recentSites,droppedSite} from './shortcuts.js';
@@ -9,7 +10,7 @@ dialog.innerHTML='<form><h2 id="shortcut-heading"></h2><label><span data-label="
 document.body.append(dialog);
 const feedback=document.createElement('span');feedback.className='shortcut-feedback';feedback.dataset.languageUi='';feedback.setAttribute('role','status');root.after(feedback);
 const nameInput=dialog.querySelector('#shortcut-name'),urlInput=dialog.querySelector('#shortcut-url'),notice=dialog.querySelector('[role="status"]');
-let defaults=[],custom={},slot=0,historyFailed=false;
+let defaults=[],custom={},slot=0,historyFailed=false,iconTabs=[];
 const storage=globalThis.chrome?.storage?.local;
 function render(){
  root.replaceChildren();root.setAttribute('aria-label',strings.t('title'));root.title=historyFailed?strings.t('history'):strings.t('title');
@@ -20,11 +21,8 @@ function render(){
   if(site){
    link.href=site.url;link.target='_blank';link.rel='noopener noreferrer';link.title=`${site.name}\n${site.url}`;
    const fallback=document.createElement('span');fallback.textContent=site.name.slice(0,1).toUpperCase();fallback.setAttribute('aria-hidden','true');link.append(fallback);
-   if(globalThis.chrome?.runtime?.getURL){
-    const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.draggable=false;
-    const src=new URL(chrome.runtime.getURL('/_favicon/'));src.searchParams.set('pageUrl',site.url);src.searchParams.set('size','32');
-    icon.onload=()=>{fallback.hidden=true;};icon.onerror=()=>icon.remove();icon.src=src.href;link.append(icon);
-   }
+   const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.draggable=false;link.append(icon);
+   loadShortcutIcon(icon,fallback,iconCandidates(site.url,iconTabs,globalThis.chrome?.runtime));
   }else {link.textContent='+';link.title=strings.t('drop');link.onclick=()=>edit(index);}
   group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect='copy';group.classList.add('drag-over');}};
   group.ondragleave=e=>{if(!group.contains(e.relatedTarget))group.classList.remove('drag-over');};
@@ -63,3 +61,5 @@ async function load(){
 render();load().catch(()=>{});
 if(storage)chrome.storage.onChanged.addListener((changes,area)=>{if(area==='local'&&Object.keys(changes).some(k=>k.startsWith('shortcut-slot-')))load().catch(()=>{});});
 (async()=>{try{defaults=await recentSites(chrome.history);}catch{historyFailed=true;}render();})();
+
+if(globalThis.chrome?.tabs)chrome.tabs.query({}).then(tabs=>{iconTabs=tabs;render();}).catch(()=>{});

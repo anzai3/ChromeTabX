@@ -222,3 +222,7 @@ Frequent sites use compact website icons from Chrome’s favicon API. Hover for 
 ## 1.7.2
 
 Website shortcuts open in a new tab, keeping the tab manager open.
+
+## 1.7.3
+
+Shortcut icons now prefer the actual favicon of an open page on the same website, then try the site’s favicon.ico and Chrome’s page-specific cache. Failed or slow sources fall back automatically. Icon requests may contact the original website or its icon CDN; no third-party icon lookup service is used.

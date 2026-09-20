@@ -18,7 +18,7 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 
 The extension does not intentionally capture incognito tabs. Browser-internal pages and pages unavailable to the extension cannot be captured.
 
-Website shortcut icons are requested through Chrome’s favicon API. ChromeTabX does not send shortcut URLs to a third-party icon service.
+Website shortcut icons use open tabs’ favicon URLs, the website’s favicon.ico, and Chrome’s favicon API. Loading an icon may contact its website or icon CDN, with no referrer sent. ChromeTabX does not send shortcut URLs to a third-party icon service.
 
 ## Network activity and sharing
 
