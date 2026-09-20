@@ -38,3 +38,11 @@ export async function captureBackgroundTab(api, tab, resize) {
   }
  }
 }
+
+
+export async function ensureThumbnailAlarm(alarms) {
+ // Recreating an existing alarm resets its deadline whenever the worker wakes.
+ if(!await alarms.get('thumbnail-queue')) {
+  await alarms.create('thumbnail-queue',{delayInMinutes:0.05,periodInMinutes:0.5});
+ }
+}

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {nextThumbnailTab,captureBackgroundTab} from '../background-thumbnails.js';
+import {nextThumbnailTab,captureBackgroundTab,ensureThumbnailAlarm} from '../background-thumbnails.js';
 const tab={id:1,url:'https://example.com',status:'complete',active:false};
 test('queue prefers loaded pages and skips active, private, audio and recent failures',()=>{
  assert.equal(nextThumbnailTab([{...tab,id:2,discarded:true},tab],{},1000000).id,1);
@@ -19,4 +19,15 @@ test('never detaches another debugger if attach failed',async()=>{
  let detached=0;
  const api={tabs:{get:async()=>tab},debugger:{attach:async()=>{throw Error('already attached');},detach:async()=>{detached++;}}};
  await assert.rejects(captureBackgroundTab(api,tab,async()=>''));assert.equal(detached,0);
+});
+
+
+test('worker wakeups preserve the existing alarm deadline',async()=>{
+ let alarm={scheduledTime:12345},created=0;
+ const alarms={get:async()=>alarm,create:async(name,options)=>{created++;alarm=options;}};
+ await ensureThumbnailAlarm(alarms);await ensureThumbnailAlarm(alarms);
+ assert.equal(created,0);assert.equal(alarm.scheduledTime,12345);
+ alarm=null;await ensureThumbnailAlarm(alarms);
+ assert.equal(created,1);assert.equal(alarm.periodInMinutes,0.5);
+ await ensureThumbnailAlarm(alarms);assert.equal(created,1);
 });

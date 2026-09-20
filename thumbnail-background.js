@@ -1,4 +1,4 @@
-import {nextThumbnailTab,captureBackgroundTab} from './background-thumbnails.js';
+import {nextThumbnailTab,captureBackgroundTab,ensureThumbnailAlarm} from './background-thumbnails.js';
 import {captureThumbnail,validThumbnail} from './thumbnails.js';
 let timer,busy=false;
 async function resize(data) {
@@ -35,7 +35,8 @@ chrome.runtime.onMessage.addListener((message,sender,reply)=>{
 });
 
 // One job per alarm; MV3 can sleep between jobs. Never select or focus a tab.
-chrome.alarms.create('thumbnail-queue',{periodInMinutes:0.5});
+ensureThumbnailAlarm(chrome.alarms).catch(console.error);
+chrome.runtime.onStartup.addListener(()=>ensureThumbnailAlarm(chrome.alarms).catch(console.error));
 chrome.alarms.onAlarm.addListener(async alarm=>{
  if(alarm.name!=='thumbnail-queue' || busy)return;
  busy=true;
@@ -45,5 +46,5 @@ chrome.alarms.onAlarm.addListener(async alarm=>{
   if(!tab)return;
   await chrome.storage.session.set({[`thumb-attempt:${tab.id}`]:Date.now()});
   await captureBackgroundTab(chrome,tab,resize);
- }catch{}finally{busy=false;}
+ }catch(error){console.warn('Background thumbnail failed:',error.message);}finally{busy=false;}
 });
