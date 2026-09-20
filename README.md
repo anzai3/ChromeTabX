@@ -232,3 +232,7 @@ Default shortcuts are Gmail, DeepSeek chat and Feishu’s homepage. History reco
 ## 1.7.5
 
 Removed page thumbnails, screenshot capture/cache code and the Apply update banner. Preview still opens the embedded page. Website shortcut icons are unchanged.
+
+## 1.7.6
+
+Shortcut editing includes an optional Favicon URL. A custom HTTP/HTTPS image URL is saved locally and tried before automatic icon sources. Leave it blank to use automatic icons. Failed images fall back to other sources.

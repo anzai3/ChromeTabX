@@ -19,3 +19,9 @@ test('all sources failing retains the letter fallback',()=>{
  loadShortcutIcon(img,fallback,['https://a/icon']);img.onerror();
  assert.equal(img.removed,true);assert.equal(fallback.hidden,false);
 });
+test('custom favicon takes priority, blank uses automatic icons, unsafe schemes are ignored',()=>{
+ const custom='https://icons.example/logo.png';
+ assert.equal(iconCandidates('https://example.com',[],null,custom)[0],custom);
+ assert.equal(iconCandidates('https://example.com',[],null,'')[0],'https://example.com/favicon.ico');
+ assert.equal(iconCandidates('https://example.com',[],null,'javascript://example.com')[0],'https://example.com/favicon.ico');
+});

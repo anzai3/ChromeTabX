@@ -6,7 +6,7 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 
 ## Information processed on your device
 
-- Default shortcuts are Gmail, DeepSeek and Feishu. No browsing history is read for recommendations. Custom shortcut names and URLs are saved locally until reset or uninstalled, and are not uploaded.
+- Default shortcuts are Gmail, DeepSeek and Feishu. No browsing history is read for recommendations. Custom shortcut names, URLs and optional favicon URLs are saved locally until reset or uninstalled, and are not uploaded.
 
 
 - Open-tab titles, URLs, window IDs and tab status are used to display, search, categorize and manage your tabs. Chrome-provided last-access information may be used for tab filtering.
@@ -15,7 +15,7 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 - If you separately install the optional macOS native helper, it reads local Chrome process resource statistics and returns them to the extension. The extension displays aggregate memory usage. The helper is not included in the store package and is not needed for tab management.
 
 
-Website shortcut icons use open tabs’ favicon URLs, the website’s favicon.ico, and Chrome’s favicon API. Loading an icon may contact its website or icon CDN, with no referrer sent. ChromeTabX does not send shortcut URLs to a third-party icon service.
+Website shortcut icons use open tabs’ favicon URLs, the website’s favicon.ico, and Chrome’s favicon API. Loading an icon may contact its website, icon CDN or your custom favicon URL, with no referrer sent. ChromeTabX does not send shortcut URLs to a third-party icon service.
 
 ## Network activity and sharing
 
