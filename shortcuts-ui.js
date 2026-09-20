@@ -1,12 +1,13 @@
 import {i18n} from './i18n.js';
 import {createI18n} from './packages/app-i18n/index.js';
-import {safeUrl,resolveSlots,recentSites} from './shortcuts.js';
-const messages={en:{title:'Frequent sites',add:'Add site',edit:'Edit shortcut {number}',heading:'Edit shortcut',name:'Name',url:'Website URL',save:'Save',cancel:'Cancel',reset:'Use recommendation',invalid:'Enter a name and a valid HTTP or HTTPS URL.',error:'Could not save. Please try again.',history:'History unavailable. You can add sites manually.'},'zh-CN':{title:'常用网址',add:'添加网址',edit:'编辑快捷网址 {number}',heading:'编辑常用网址',name:'名称',url:'网址',save:'保存',cancel:'取消',reset:'恢复推荐',invalid:'请填写名称和有效的 HTTP 或 HTTPS 网址。',error:'保存失败，请重试。',history:'无法读取历史记录，可以手动添加网址。'}};
+import {safeUrl,resolveSlots,recentSites,droppedSite} from './shortcuts.js';
+const messages={en:{drop:'Drag a website here',dropped:'Shortcut saved',badDrop:'Drag an HTTP or HTTPS link here.',title:'Frequent sites',add:'Add site',edit:'Edit shortcut {number}',heading:'Edit shortcut',name:'Name',url:'Website URL',save:'Save',cancel:'Cancel',reset:'Use recommendation',invalid:'Enter a name and a valid HTTP or HTTPS URL.',error:'Could not save. Please try again.',history:'History unavailable. You can add sites manually.'},'zh-CN':{drop:'拖拽网址到这里',dropped:'快捷网址已保存',badDrop:'请拖入 HTTP 或 HTTPS 网页链接。',title:'常用网址',add:'添加网址',edit:'编辑快捷网址 {number}',heading:'编辑常用网址',name:'名称',url:'网址',save:'保存',cancel:'取消',reset:'恢复推荐',invalid:'请填写名称和有效的 HTTP 或 HTTPS 网址。',error:'保存失败，请重试。',history:'无法读取历史记录，可以手动添加网址。'}};
 const strings=createI18n({messages,preference:i18n.locale});
 const root=document.getElementById('shortcuts'),dialog=document.createElement('dialog');
 dialog.dataset.languageUi='';dialog.id='shortcut-dialog';dialog.setAttribute('aria-labelledby','shortcut-heading');
 dialog.innerHTML='<form><h2 id="shortcut-heading"></h2><label><span data-label="name"></span><input id="shortcut-name" maxlength="40" required></label><label><span data-label="url"></span><input id="shortcut-url" type="text" inputmode="url" required placeholder="https://example.com"></label><p role="status"></p><div class="dialog-actions"><button type="button" data-action="reset"></button><button type="button" data-action="cancel"></button><button class="primary" data-action="save"></button></div></form>';
 document.body.append(dialog);
+const feedback=document.createElement('span');feedback.className='shortcut-feedback';feedback.dataset.languageUi='';feedback.setAttribute('role','status');root.after(feedback);
 const nameInput=dialog.querySelector('#shortcut-name'),urlInput=dialog.querySelector('#shortcut-url'),notice=dialog.querySelector('[role="status"]');
 let defaults=[],custom={},slot=0,historyFailed=false;
 const storage=globalThis.chrome?.storage?.local;
@@ -14,8 +15,25 @@ function render(){
  root.replaceChildren();root.setAttribute('aria-label',strings.t('title'));root.title=historyFailed?strings.t('history'):strings.t('title');
  resolveSlots(defaults,custom).forEach((site,index)=>{
   const group=document.createElement('div');group.className='shortcut';
-  const link=document.createElement(site?'a':'button');link.textContent=site?site.name:strings.t('add');
-  if(site){link.href=site.url;link.title=site.url;}else link.onclick=()=>edit(index);
+  const link=document.createElement(site?'a':'button');link.className='shortcut-link';
+  link.setAttribute('aria-label',site?site.name:strings.t('add'));
+  if(site){
+   link.href=site.url;link.title=`${site.name}\n${site.url}`;
+   const fallback=document.createElement('span');fallback.textContent=site.name.slice(0,1).toUpperCase();fallback.setAttribute('aria-hidden','true');link.append(fallback);
+   if(globalThis.chrome?.runtime?.getURL){
+    const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.draggable=false;
+    const src=new URL(chrome.runtime.getURL('/_favicon/'));src.searchParams.set('pageUrl',site.url);src.searchParams.set('size','32');
+    icon.onload=()=>{fallback.hidden=true;};icon.onerror=()=>icon.remove();icon.src=src.href;link.append(icon);
+   }
+  }else {link.textContent='+';link.title=strings.t('drop');link.onclick=()=>edit(index);}
+  group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect='copy';group.classList.add('drag-over');}};
+  group.ondragleave=e=>{if(!group.contains(e.relatedTarget))group.classList.remove('drag-over');};
+  group.ondrop=async e=>{
+   e.preventDefault();group.classList.remove('drag-over');const value=droppedSite(e.dataTransfer);
+   if(!value){feedback.textContent=strings.t('badDrop');return;}
+   try{if(!storage)throw Error();await storage.set({[`shortcut-slot-${index}`]:value});custom[index]=value;render();feedback.textContent=strings.t('dropped');}
+   catch{feedback.textContent=strings.t('error');}
+  };
   const button=document.createElement('button');button.textContent='✎';button.title=strings.t('edit',{number:index+1});button.setAttribute('aria-label',button.title);button.onclick=()=>edit(index);
   group.append(link,button);root.append(group);
  });

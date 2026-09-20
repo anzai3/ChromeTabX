@@ -214,3 +214,7 @@ Thumbnail cards read cached images directly from session storage. Missing images
 ## 1.7.0 — Frequent sites
 
 A shorter search field shares its row with five editable website shortcuts. Recommendations count visits in the past 30 days across up to 500 recently visited URLs, grouped by website origin. Each slot can be customized or reset to a recommendation. Custom names and URLs stay in local extension storage and sync between open manager pages on this device. The history permission is used only for local recommendations; no history is uploaded.
+
+## 1.7.1 — Icon shortcuts and drag-and-drop
+
+Frequent sites use compact website icons from Chrome’s favicon API. Hover for the name and URL; hover or keyboard-focus reveals editing. Drop an HTTP/HTTPS link onto a slot to save or replace it. A missing icon falls back to the first letter. The favicon permission enables Chrome-provided icons without a third-party icon service.

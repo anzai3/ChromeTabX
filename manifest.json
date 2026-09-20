@@ -1,14 +1,15 @@
 {
   "manifest_version": 3,
   "name": "ChromeTabX — Tab Manager",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Find open tabs fast. Search across windows, browse by topic, preview pages, and close duplicate tabs from your new-tab page.",
   "permissions": [
     "tabs",
     "scripting",
     "nativeMessaging",
     "storage",
-    "history"
+    "history",
+    "favicon"
   ],
   "chrome_url_overrides": {
     "newtab": "newtab.html"

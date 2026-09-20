@@ -28,3 +28,13 @@ export async function recentSites(history,now=Date.now()) {
  }));
  return rankSites(records,startTime);
 }
+
+// Dragged text must be an explicit web URL, never arbitrary text or executable schemes.
+export function droppedSite(transfer) {
+ const candidates=[transfer.getData('text/uri-list'),transfer.getData('text/plain')];
+ for(const data of candidates)for(const line of data.split(/\r?\n/)){
+  const value=line.trim();if(!/^https?:\/\//i.test(value))continue;
+  const url=safeUrl(value);if(url)return {url,name:new URL(url).hostname.replace(/^www\./,'')};
+ }
+ return null;
+}
