@@ -85,7 +85,7 @@ After updating the source, click **Reload** on the extension card and open a new
 
 ## Page summaries and preview
 
-Cards show a one-line page description or opening text. Hover over the **Preview button** to temporarily load the webpage in a floating frame; move away to destroy it. Hovering elsewhere on a card does nothing. Click **Preview** for the existing text preview dialog. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
+Cards show a one-line page description or opening text. Hover over the **Preview button** to temporarily load the webpage in a floating frame; move away to destroy it. Hovering elsewhere on a card does nothing. Preview content defaults to 80% scale, adjustable from 70% to 100%. Use **Text preview** or **Open original tab** when a site refuses embedding. Click **Preview** for the existing text preview dialog. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
 
 Card summaries and the click dialog use text excerpts, not AI-written summaries. The hover frame separately requests the webpage and may run its scripts or use its login cookies; it is not a mirror of the original tab. Sites may block embedding or require sign-in. The frame is sandboxed without forms, popups, downloads or top-level navigation; use **Open original tab** if it cannot display. Restricted, empty or discarded pages may be unavailable. The extension does not wake discarded tabs or send page content to a server.
 

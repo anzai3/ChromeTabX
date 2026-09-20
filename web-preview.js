@@ -10,13 +10,23 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
  const header=doc.createElement('div');header.className='web-preview-header';
  const title=doc.createElement('strong'),close=doc.createElement('button');close.type='button';close.textContent='×';
  const note=doc.createElement('p'),frameHost=doc.createElement('div'),open=doc.createElement('button');open.type='button';
- header.append(title,close);panel.append(header,note,frameHost,open);doc.body.append(panel);
+ frameHost.className='web-preview-viewport';
+ const toolbar=doc.createElement('div');toolbar.className='web-preview-tools';
+ const zoomLabel=doc.createElement('label'),zoom=doc.createElement('select'),zoomText=doc.createElement('span');
+ for(const value of [70,80,90,100]){const option=doc.createElement('option');option.value=String(value);option.textContent=`${value}%`;zoom.append(option);}
+ zoom.value='80';zoomLabel.append(zoomText,zoom);
+ const textPreview=doc.createElement('button');textPreview.type='button';
+ toolbar.append(zoomLabel,textPreview,open);
+ header.append(title,close);panel.append(header,note,frameHost,toolbar);doc.body.append(panel);
+ function applyZoom(){const scale=Number(zoom.value)/100;const frame=frameHost.querySelector('iframe');if(frame){frame.style.width=`${100/scale}%`;frame.style.height=`${100/scale}%`;frame.style.transform=`scale(${scale})`;}}
+ zoom.onchange=applyZoom;
+ textPreview.onclick=()=>{const button=trigger;hide();button?.click();};
  let trigger=null,showTimer,hideTimer,epoch=0,tab=null;
  const words=()=>locale.locale.startsWith('zh')?{
-  title:'网页预览',close:'关闭预览',open:'打开原标签',
+  title:'网页预览',close:'关闭预览',open:'打开原标签',zoom:'缩放',text:'文字预览',
   note:'临时加载网页；若空白、登录失败或网站禁止嵌入，请打开原标签。',
   unavailable:'该页面无法嵌入预览，请打开原标签。'
- }:{title:'Web preview',close:'Close preview',open:'Open original tab',note:'Loads a temporary page. If blank, signed out, or blocked by the site, open the original tab.',unavailable:'This page cannot be embedded. Open the original tab.'};
+ }:{title:'Web preview',close:'Close preview',open:'Open original tab',zoom:'Zoom',text:'Text preview',note:'Loads a temporary page. If blank, signed out, or blocked by the site, open the original tab.',unavailable:'This page cannot be embedded. Open the original tab.'};
  function hide(){clearTimeout(showTimer);clearTimeout(hideTimer);epoch++;panel.hidden=true;frameHost.replaceChildren();trigger=null;tab=null;}
  function leave(){clearTimeout(showTimer);clearTimeout(hideTimer);hideTimer=setTimeout(hide,220);}
  async function show(button){
@@ -24,6 +34,7 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
   const node=button.closest('.card')?.querySelector('[data-summary]');if(!node)return;
   hide();trigger=button;const token=++epoch;const w=words();
   title.textContent=node.dataset.title||w.title;panel.setAttribute('aria-label',w.title);close.setAttribute('aria-label',w.close);open.textContent=w.open;open.disabled=true;note.textContent=w.note;
+  zoomText.textContent=w.zoom;zoom.setAttribute('aria-label',w.zoom);textPreview.textContent=w.text;
   panel.hidden=false;
   const rect=button.getBoundingClientRect(),width=panel.offsetWidth,height=panel.offsetHeight;
   let left=rect.right+10;
@@ -39,7 +50,7 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
    const frame=doc.createElement('iframe');frame.title=w.title;
    // Isolate external content; no popups, top navigation, forms, or downloads.
    frame.setAttribute('sandbox','allow-scripts allow-same-origin');frame.referrerPolicy='no-referrer';
-   frame.src=url;frameHost.append(frame);
+   frame.src=url;frameHost.append(frame);applyZoom();
    // Cross-origin load events cannot prove successful rendering. Keep the fallback visible.
   }catch{if(token===epoch)note.textContent=w.unavailable;}
  }
