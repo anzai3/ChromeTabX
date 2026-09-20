@@ -206,10 +206,8 @@ Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese]
 
 Generic tab titles such as “Docs” are checked against the loaded page’s title, document heading, and title metadata. Delayed titles are retried every 15 seconds while the manager is visible; recovered titles are retained for the same tab and URL during that manager session. Sleeping tabs are not reloaded.
 
-Version 1.6.6 removes debugger-based background screenshots and the debugger/alarms permissions. Thumbnails are captured only while you normally view a loaded page in the focused Chrome window. No tabs are automatically loaded or switched for screenshots. Cached images use 320×180 WebP, up to 512 images / approximately 8 MB, with a six-hour lifetime. Pages without a cached screenshot leave the thumbnail area empty.
 
 
-Thumbnail cards read cached images directly from session storage. Missing images do not show a perpetual loading message. The manager offers an Apply update button when the background version is older than the installed source files.
 
 ## 1.7.0 — Frequent sites
 
@@ -230,3 +228,7 @@ Shortcut icons now prefer the actual favicon of an open page on the same website
 ## 1.7.4
 
 Default shortcuts are Gmail, DeepSeek chat and Feishu’s homepage. History recommendations and the history permission have been removed. Existing custom shortcuts are retained; two additional slots remain available.
+
+## 1.7.5
+
+Removed page thumbnails, screenshot capture/cache code and the Apply update banner. Preview still opens the embedded page. Website shortcut icons are unchanged.
