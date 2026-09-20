@@ -6,9 +6,9 @@
 
 ChromeTabX is a **Chrome extension that turns your new-tab page into a searchable list of your open tabs**. Instead of clicking through tiny tabs, open a new tab, type a word you remember, and jump straight to the page.
 
-![ChromeTabX explained: turn crowded tabs into a searchable new-tab dashboard with topic categories and duplicate cleanup.](docs/images/chrometabx-overview.png)
+![ChromeTabX explained: turn crowded tabs into a searchable new-tab dashboard with topic categories and duplicate cleanup.](docs/images/architecture-en.svg)
 
-*Feature illustration, not a screenshot of the extension.*
+*Current product architecture: find pages, organize tabs, and reduce clutter. Not an application screenshot.*
 
 ## More tabs, less time lost
 

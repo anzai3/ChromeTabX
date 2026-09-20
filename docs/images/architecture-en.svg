@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940" role="img">
+<title>Many tabs. Less searching. More focus.</title>
+<rect width="1440" height="940" rx="28" fill="#f6f8fc"/>
+<text x="64" y="66" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="25" fill="#2563eb" font-weight="700">ChromeTabX</text>
+<text x="64" y="140" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="44" fill="#17243b" font-weight="700">Many tabs. Less searching. More focus.</text>
+<text x="64" y="186" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#52627a" font-weight="400">Open a new tab to manage the pages you already have open.</text>
+<rect x="64" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="88" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#2563eb" font-weight="700">01</text>
+<text x="88" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">Find your page</text>
+<text x="88" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Search titles and URLs</text>
+<text x="88" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Search readable page text</text>
+<text x="88" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Click to return to the original tab</text>
+<path d="M88 512h372" stroke="#e3e9f2"/>
+<text x="88" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#2563eb" font-weight="700">Less time hunting for pages</text>
+<rect x="506" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="530" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#8151bc" font-weight="700">02</text>
+<text x="530" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">Organize your tabs</text>
+<text x="530" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Current window or all windows</text>
+<text x="530" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Topic cloud + up to 3 subcategories</text>
+<text x="530" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Cards, lists and pinned tabs</text>
+<path d="M530 512h372" stroke="#e3e9f2"/>
+<text x="530" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#8151bc" font-weight="700">Keep lots of tabs manageable</text>
+<rect x="948" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="972" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#218267" font-weight="700">03</text>
+<text x="972" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">Clear the clutter</text>
+<text x="972" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Review duplicate URLs</text>
+<text x="972" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Keep one copy per URL</text>
+<text x="972" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Close pages you no longer need</text>
+<path d="M972 512h372" stroke="#e3e9f2"/>
+<text x="972" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#218267" font-weight="700">Fewer unnecessary pages</text>
+<rect x="64" y="640" width="1304" height="144" rx="18" fill="#eaf0fa"/>
+<text x="88" y="689" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#17243b" font-weight="600">Optional macOS monitor: observe Chrome memory and CPU</text>
+<text x="88" y="742" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="23" fill="#52627a" font-weight="400">Settings: language · donations when configured</text>
+<text x="64" y="838" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="22" fill="#52627a" font-weight="400">Closing active pages may reduce resource usage. Speed improvements vary.</text>
+<text x="64" y="892" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="18" fill="#687890" font-weight="400">Runs locally · No account needed · Product architecture, not a screenshot</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940" role="img">
+<title>标签再多，也能清楚管理。</title>
+<rect width="1440" height="940" rx="28" fill="#f6f8fc"/>
+<text x="64" y="66" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="25" fill="#2563eb" font-weight="700">ChromeTabX</text>
+<text x="64" y="140" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="44" fill="#17243b" font-weight="700">标签再多，也能清楚管理。</text>
+<text x="64" y="186" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#52627a" font-weight="400">打开新标签页，集中管理已经打开的网页，少翻找、更专注。</text>
+<rect x="64" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="88" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#2563eb" font-weight="700">01</text>
+<text x="88" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">快速找页面</text>
+<text x="88" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">搜索标题和网址</text>
+<text x="88" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">搜索可读取的网页正文</text>
+<text x="88" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">点击结果，回到原来的标签</text>
+<path d="M88 512h372" stroke="#e3e9f2"/>
+<text x="88" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#2563eb" font-weight="700">减少翻找时间，提高工作效率</text>
+<rect x="506" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="530" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#8151bc" font-weight="700">02</text>
+<text x="530" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">分类浏览与管理</text>
+<text x="530" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">默认当前窗口，可切换所有窗口</text>
+<text x="530" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">主题分类云 + 最多三个二级分类</text>
+<text x="530" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">卡片、列表与固定标签</text>
+<path d="M530 512h372" stroke="#e3e9f2"/>
+<text x="530" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#8151bc" font-weight="700">大量标签也能井然有序</text>
+<rect x="948" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
+<text x="972" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#218267" font-weight="700">03</text>
+<text x="972" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">清理多余标签</text>
+<text x="972" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">先预览重复网址</text>
+<text x="972" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">每个相同网址保留一个</text>
+<text x="972" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">关闭不再需要的页面</text>
+<path d="M972 512h372" stroke="#e3e9f2"/>
+<text x="972" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#218267" font-weight="700">减少不必要的页面</text>
+<rect x="64" y="640" width="1304" height="144" rx="18" fill="#eaf0fa"/>
+<text x="88" y="689" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#17243b" font-weight="600">可选 macOS 监控：观察 Chrome 内存与 CPU 占用</text>
+<text x="88" y="742" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="23" fill="#52627a" font-weight="400">设置：语言 · 配置后可用的捐款入口</text>
+<text x="64" y="838" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="22" fill="#52627a" font-weight="400">关闭活跃页面有助于降低资源占用，实际提速效果因页面而异。</text>
+<text x="64" y="892" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="18" fill="#687890" font-weight="400">本机运行 · 无需账号 · 产品信息架构示意，并非实际截图</text>
+</svg>

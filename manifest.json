@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Tab Matrix · 标签矩阵",
-  "version": "1.2.4",
-  "description": "在新标签页搜索和管理所有窗口的标签，清理重复页面，查看久未访问的标签。",
+  "version": "1.2.5",
+  "description": "集中管理大量标签，快速搜索页面、按主题分类并清理重复网址，减少翻找和不必要的页面。",
   "permissions": [
     "tabs",
     "scripting",
