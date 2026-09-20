@@ -1,6 +1,7 @@
 import {nextThumbnailTab,captureBackgroundTab,ensureThumbnailAlarm} from './background-thumbnails.js';
 import {captureThumbnail,validThumbnail} from './thumbnails.js';
-let timer,busy=false;
+let timer,busy=false,queueTimer;
+const priorities=new Set();
 async function resize(data) {
  const bitmap=await createImageBitmap(await (await fetch(data)).blob());
  try {
@@ -8,7 +9,7 @@ async function resize(data) {
   ctx.fillStyle='#fff';ctx.fillRect(0,0,320,180);
   const scale=Math.min(320/bitmap.width,180/bitmap.height);
   ctx.drawImage(bitmap,0,0,bitmap.width*scale,bitmap.height*scale);
-  const blob=await canvas.convertToBlob({type:'image/webp',quality:0.65});
+  const blob=await canvas.convertToBlob({type:'image/webp',quality:0.5});
   const bytes=new Uint8Array(await blob.arrayBuffer());
   return 'data:image/webp;base64,'+btoa(String.fromCharCode(...bytes));
  }finally{bitmap.close();}
@@ -29,6 +30,7 @@ chrome.runtime.onMessage.addListener((message,sender,reply)=>{
   const tab=await chrome.tabs.get(message.id);
   if(tab.incognito || tab.url!==message.url)return null;
   const key=`thumb:${tab.id}`,entry=(await chrome.storage.session.get(key))[key];
+  if(!validThumbnail(entry,tab.url)){priorities.add(tab.id);kickQueue();}
   return validThumbnail(entry,tab.url)?entry.image:null;
  })().then(reply,()=>reply(null));
  return true;
@@ -37,14 +39,22 @@ chrome.runtime.onMessage.addListener((message,sender,reply)=>{
 // One job per alarm; MV3 can sleep between jobs. Never select or focus a tab.
 ensureThumbnailAlarm(chrome.alarms).catch(console.error);
 chrome.runtime.onStartup.addListener(()=>ensureThumbnailAlarm(chrome.alarms).catch(console.error));
-chrome.alarms.onAlarm.addListener(async alarm=>{
- if(alarm.name!=='thumbnail-queue' || busy)return;
- busy=true;
+function kickQueue(delay=100) {
+ if(queueTimer)return;
+ queueTimer=setTimeout(()=>{queueTimer=null;runQueue();},delay);
+}
+async function runQueue(){
+ if(busy){kickQueue(2000);return;}
+ busy=true;let attempted=false;
  try {
   const cache=await chrome.storage.session.get(null);
-  const tab=nextThumbnailTab(await chrome.tabs.query({}),cache);
+  const tab=nextThumbnailTab(await chrome.tabs.query({}),cache,Date.now(),priorities);
   if(!tab)return;
+  priorities.delete(tab.id);attempted=true;
   await chrome.storage.session.set({[`thumb-attempt:${tab.id}`]:Date.now()});
   await captureBackgroundTab(chrome,tab,resize);
- }catch(error){console.warn('Background thumbnail failed:',error.message);}finally{busy=false;}
-});
+ }catch(error){console.warn('Background thumbnail failed:',error.message);}
+ finally{busy=false;if(attempted)kickQueue(2000);}
+}
+chrome.alarms.onAlarm.addListener(alarm=>{if(alarm.name==='thumbnail-queue')kickQueue();});
+kickQueue();

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {captureAllowed,validThumbnail,captureThumbnail,THUMB_TTL} from '../thumbnails.js';
+import {captureAllowed,validThumbnail,captureThumbnail,THUMB_TTL,THUMB_LIMIT} from '../thumbnails.js';
 const tab={id:1,windowId:2,url:'https://example.com',active:true,status:'complete'};
 const image='data:image/webp;base64,AAAA';
 function fixture(){
@@ -32,9 +32,9 @@ test('never capture background windows or save a navigated tab',async()=>{
  api.tabs.get=async()=>({...tab,url:++reads===1?tab.url:'https://other.com'});
  await captureThumbnail(api,1,async()=>image,1000);assert.deepEqual(store,{});
 });
-test('cache is bounded to 100 thumbnails',async()=>{
+test('cache is bounded to the thumbnail limit',async()=>{
  const {api,store}=fixture();
- for(let id=2;id<103;id++)store[`thumb:${id}`]={url:tab.url,time:1,image};
+ for(let id=2;id<THUMB_LIMIT+3;id++)store[`thumb:${id}`]={url:tab.url,time:1,image};
  await captureThumbnail(api,1,async()=>image,1000);
- assert.equal(Object.keys(store).length,100);assert.ok(store['thumb:1']);
+ assert.equal(Object.keys(store).length,THUMB_LIMIT);assert.ok(store['thumb:1']);
 });

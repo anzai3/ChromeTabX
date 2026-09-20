@@ -10,7 +10,7 @@ test('queue prefers loaded pages and skips active, private, audio and recent fai
 test('background capture detaches debugger on success and failure without activating tab',async()=>{
  for(const fail of [false,true]){
   let detached=0,saved=0;
-  const api={tabs:{get:async()=>tab},debugger:{attach:async()=>{},detach:async()=>{detached++;},sendCommand:async()=>{if(fail)throw Error('blocked');return {data:'AAAA'};}},storage:{session:{set:async()=>{saved++;}}}};
+  const api={tabs:{get:async()=>tab},debugger:{attach:async()=>{},detach:async()=>{detached++;},sendCommand:async()=>{if(fail)throw Error('blocked');return {data:'AAAA'};}},storage:{session:{get:async()=>({}),remove:async()=>{},set:async()=>{saved++;}}}};
   try{await captureBackgroundTab(api,tab,async()=> 'data:image/webp;base64,AAAA');}catch{}
   assert.equal(detached,1);assert.equal(saved,fail?0:1);
  }
@@ -30,4 +30,11 @@ test('worker wakeups preserve the existing alarm deadline',async()=>{
  alarm=null;await ensureThumbnailAlarm(alarms);
  assert.equal(created,1);assert.equal(alarm.periodInMinutes,0.5);
  await ensureThumbnailAlarm(alarms);assert.equal(created,1);
+});
+
+
+test('queue continues beyond 100 cached pages and prioritizes visible cards',()=>{
+ const cache={};
+ for(let i=10;i<160;i++)cache[`thumb:${i}`]={time:1000000,url:'https://example.com/'+i,image:'data:image/webp;base64,AAAA'};
+ assert.equal(nextThumbnailTab([tab,{...tab,id:2}],cache,1000001,new Set([2])).id,2);
 });

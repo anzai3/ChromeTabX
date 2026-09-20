@@ -1,9 +1,8 @@
-import {validThumbnail,THUMB_LIMIT} from './thumbnails.js';
-export function nextThumbnailTab(tabs, cache, now=Date.now()) {
- if(Object.keys(cache).filter(key=>key.startsWith('thumb:') && now-cache[key].time<30*60*1000).length>=THUMB_LIMIT)return null;
+import {validThumbnail,pruneThumbnails} from './thumbnails.js';
+export function nextThumbnailTab(tabs, cache, now=Date.now(), priorities=new Set()) {
  return tabs.filter(tab=>!tab.active && !tab.incognito && !tab.audible && /^https?:\/\//.test(tab.url||''))
   .filter(tab=>!validThumbnail(cache[`thumb:${tab.id}`],tab.url,now) && now-(cache[`thumb-attempt:${tab.id}`]||0)>5*60*1000)
-  .sort((a,b)=>Number(!!a.discarded)-Number(!!b.discarded))[0] || null;
+  .sort((a,b)=>Number(priorities.has(b.id))-Number(priorities.has(a.id)) || Number(!!a.discarded)-Number(!!b.discarded) || (cache[`thumb-attempt:${a.id}`]||0)-(cache[`thumb-attempt:${b.id}`]||0))[0] || null;
 }
 export async function captureBackgroundTab(api, tab, resize) {
  const target={tabId:tab.id};let attached=false,woke=false;
@@ -29,6 +28,7 @@ export async function captureBackgroundTab(api, tab, resize) {
   const image=await resize('data:image/jpeg;base64,'+result.data);
   const after=await api.tabs.get(tab.id);
   if(after.url!==startUrl || after.incognito || image.length>60000)return;
+  await pruneThumbnails(api);
   await api.storage.session.set({[`thumb:${tab.id}`]:{url:startUrl,time:Date.now(),image}});
  }finally{
   if(attached)await api.debugger.detach(target).catch(()=>{});

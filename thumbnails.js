@@ -1,5 +1,5 @@
-export const THUMB_LIMIT = 100;
-export const THUMB_TTL = 30 * 60 * 1000;
+export const THUMB_LIMIT = 512;
+export const THUMB_TTL = 6 * 60 * 60 * 1000;
 export function captureAllowed(tab) {
  return !!tab?.active && !tab.discarded && !tab.incognito && tab.status === 'complete' && /^https?:\/\//.test(tab.url || '');
 }
@@ -20,8 +20,12 @@ export async function captureThumbnail(api, tabId, resize, now = Date.now()) {
  const image = await resize(data);
  if(image.length>60000)return;
  await api.storage.session.set({[key]:{url:tab.url,time:now,image}});
+ await pruneThumbnails(api,now);
+}
+export async function pruneThumbnails(api,now=Date.now()) {
  const all = await api.storage.session.get(null);
  const entries = Object.entries(all).filter(([key])=>key.startsWith('thumb:')).sort((a,b)=>b[1].time-a[1].time);
- const remove = entries.filter(([,v],i)=>i>=THUMB_LIMIT || now-v.time>=THUMB_TTL).map(([key])=>key);
+ let bytes=0;
+ const remove = entries.filter(([,v],i)=>{bytes+=(v.image?.length||0)*2+1024;return i>=THUMB_LIMIT || bytes>8*1024*1024 || now-v.time>=THUMB_TTL;}).map(([key])=>key);
  if(remove.length)await api.storage.session.remove(remove);
 }
