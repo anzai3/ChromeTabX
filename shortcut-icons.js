@@ -1,6 +1,5 @@
-import {safeUrl} from './shortcuts.js';
 // Prefer the actual icon reported by an open page over Chrome's root-URL cache.
-export function iconCandidates(siteUrl,tabs,runtime,customIcon) {
+export function iconCandidates(siteUrl,tabs,runtime) {
  const site=new URL(siteUrl);
  const matching=tabs.filter(tab=>{try{return new URL(tab.url).origin===site.origin;}catch{return false;}})
   .sort((a,b)=>Number(b.url===siteUrl)-Number(a.url===siteUrl));
@@ -11,8 +10,7 @@ export function iconCandidates(siteUrl,tabs,runtime,customIcon) {
    const cached=new URL(runtime.getURL('/_favicon/'));cached.searchParams.set('pageUrl',page);cached.searchParams.set('size','32');icons.push(cached.href);
   }
  }
- const explicit=customIcon && safeUrl(customIcon);
- return [...new Set([...(explicit?[explicit]:[]),...icons])].slice(0,8);
+ return [...new Set(icons)].slice(0,8);
 }
 export function loadShortcutIcon(img,fallback,candidates) {
  let index=0,timer;

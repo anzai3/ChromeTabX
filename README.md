@@ -236,3 +236,7 @@ Removed page thumbnails, screenshot capture/cache code and the Apply update bann
 ## 1.7.6
 
 Shortcut editing includes an optional Favicon URL. A custom HTTP/HTTPS image URL is saved locally and tried before automatic icon sources. Leave it blank to use automatic icons. Failed images fall back to other sources.
+
+## 1.7.7
+
+Bookmark editing uses only name and URL. Icons are resolved automatically; the manual favicon field has been removed. A blank name defaults to the website hostname. Drag-and-drop and opening bookmarks in a new tab remain available.
