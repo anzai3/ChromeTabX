@@ -2,7 +2,7 @@ const root=document.getElementById('content');
 const live=location.protocol==='chrome-extension:';
 const queue=[];let active=0;
 const observer=new IntersectionObserver(entries=>{
- for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target);}
+ for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);const img=entry.target.querySelector('[data-thumbnail]');if(img)queue.push(img);}
  drain();
 },{rootMargin:'80px'});
 function drain(){
@@ -18,7 +18,7 @@ function drain(){
 }
 const watched=new Set();
 function discover(){
- for(const img of watched)if(!img.isConnected){observer.unobserve(img);watched.delete(img);}
- root.querySelectorAll('[data-thumbnail]').forEach(img=>{if(!watched.has(img)){watched.add(img);observer.observe(img);}});
+ for(const img of watched)if(!img.isConnected){observer.unobserve(img.closest('.card') || img);watched.delete(img);}
+ root.querySelectorAll('[data-thumbnail]').forEach(img=>{if(!watched.has(img)){watched.add(img);observer.observe(img.closest('.card'));}});
 }
 if(live){new MutationObserver(discover).observe(root,{childList:true});discover();}
