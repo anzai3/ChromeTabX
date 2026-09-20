@@ -1,4 +1,5 @@
 import {extractPagePreview,createPreviewReader} from './page-preview.js';
+import {isGenericTitle} from './tab-titles.js';
 import {i18n} from './i18n.js';
 const zh=()=>i18n.locale.startsWith('zh');
 const copy=()=>zh()?{loading:'正在读取页面简介…',unavailable:'页面简介暂不可用',preview:'预览',close:'关闭预览',note:'网页文字预览 · 非实时画面',open:'打开原标签'}:{loading:'Reading page summary…',unavailable:'Page summary unavailable',preview:'Preview',close:'Close preview',note:'Page text preview · Not a live view',open:'Open original tab'};
@@ -59,7 +60,7 @@ document.addEventListener('click',async event=>{
   const data=await read(tab);
   if(epoch!==request)return;
   if(live && (await chrome.tabs.get(tab.id)).url!==tab.url)throw Error('changed');
-  selected=tab;document.getElementById('preview-title').textContent=tab.title||'';
+  selected=tab;document.getElementById('preview-title').textContent=isGenericTitle(tab.title)?node.dataset.title:tab.title;
   document.getElementById('preview-url').textContent=tab.url||'';
   document.getElementById('preview-body').textContent=data.state==='done'?data.excerpt:unavailable(data);
   document.getElementById('preview-open').disabled=!live;

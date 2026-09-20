@@ -1,3 +1,4 @@
+import {isGenericTitle} from './tab-titles.js';
 import {i18n} from './i18n.js';
 
 export function previewUrl(value) {
@@ -46,6 +47,7 @@ export function mountWebPreview({root=document.getElementById('content'),doc=doc
    const target=live?await chrome.tabs.get(Number(button.dataset.preview)):{id:Number(button.dataset.preview),url:node.dataset.url};
    if(token!==epoch)return;
    tab=target;open.disabled=!live;
+   if(!isGenericTitle(target.title))title.textContent=target.title;
    const url=previewUrl(target.url);if(!url){note.textContent=w.unavailable;return;}
    const frame=doc.createElement('iframe');frame.title=w.title;
    // Isolate external content; no popups, top navigation, forms, or downloads.

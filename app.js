@@ -1,4 +1,4 @@
-import {resolveTabTitles,readDocumentTitle} from './tab-titles.js';
+import {resolveTabTitles,readDocumentTitle,isGenericTitle} from './tab-titles.js';
 import {scopeTabs,countCategories} from './tab-scope.js';
 import './metrics.js';
 import {titleHierarchy,titleSubject} from './title-rules.js';
@@ -102,6 +102,8 @@ async function init(){
  else{tabs=demoRows.map(([title,url],i)=>{return{id:i+1,title,url,windowId:i>8?2:1,pinned:i===0,lastAccessed:Date.now()-[0.1,2,9,35,15,0.5,60,4,8,1,31,3][i]*86400000};});$('#demo-banner').hidden=false;}
  await refresh();
  setInterval(()=>{if(view==='inactive')guard(refresh)();},60000);
+ // Retry delayed SPA titles while this manager is visible.
+ setInterval(()=>{if(live && !document.hidden && tabs.some(tab=>!tab.discarded && isGenericTitle(tab.title)))guard(refresh)();},15000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)guard(refresh)();});
 }
 guard(init)();

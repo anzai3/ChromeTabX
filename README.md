@@ -200,4 +200,4 @@ Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese]
 
 [MIT](LICENSE). You may use, modify, and distribute the code under the license terms.
 
-Generic tab titles such as “Docs” are checked against the loaded page’s actual title. Sleeping tabs are not reloaded.
+Generic tab titles such as “Docs” are checked against the loaded page’s title, document heading, and title metadata. Delayed titles are retried every 15 seconds while the manager is visible; recovered titles are retained for the same tab and URL during that manager session. Sleeping tabs are not reloaded.
