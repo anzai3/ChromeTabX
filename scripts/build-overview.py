@@ -10,7 +10,7 @@ COPY = {
    ('Find your page',['Search titles and URLs','Search readable page text','Click to return to the original tab'],'Less time hunting for pages'),
    ('Organize your tabs',['All windows in one view','Topic cloud + up to 3 subcategories','Browse tabs in cards'],'Keep lots of tabs manageable'),
    ('Clear the clutter',['Review duplicate URLs','Keep one copy per URL','Close pages you no longer need'],'Fewer unnecessary pages')],
-  'monitor':'Optional macOS monitor: observe Chrome memory and CPU',
+  'monitor':'Optional macOS monitor: observe Chrome memory',
   'settings':'Settings: language · donations when configured',
   'note':'Closing active pages may reduce resource usage. Speed improvements vary.',
   'footer':'Runs locally · No account needed · Product architecture, not a screenshot'},
@@ -21,7 +21,7 @@ COPY = {
    ('快速找页面',['搜索标题和网址','搜索可读取的网页正文','点击结果，回到原来的标签'],'减少翻找时间，提高工作效率'),
    ('分类浏览与管理',['统一展示所有窗口的标签','主题分类云 + 最多三个二级分类','使用卡片浏览标签'],'大量标签也能井然有序'),
    ('清理多余标签',['先预览重复网址','每个相同网址保留一个','关闭不再需要的页面'],'减少不必要的页面')],
-  'monitor':'可选 macOS 监控：观察 Chrome 内存与 CPU 占用',
+  'monitor':'可选 macOS 监控：观察 Chrome 内存占用',
   'settings':'设置：语言 · 配置后可用的捐款入口',
   'note':'关闭活跃页面有助于降低资源占用，实际提速效果因页面而异。',
   'footer':'本机运行 · 无需账号 · 产品信息架构示意，并非实际截图'}

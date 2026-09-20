@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Tab Matrix · 标签矩阵",
-  "version": "1.6.4",
-  "description": "集中管理大量标签，快速搜索页面、按主题分类并清理重复网址，减少翻找和不必要的页面。",
+  "name": "ChromeTabX — Tab Manager",
+  "version": "1.6.5",
+  "description": "Find open tabs fast. Search across windows, browse by topic, preview pages, and close duplicate tabs from your new-tab page.",
   "permissions": [
     "tabs",
     "scripting",
@@ -15,7 +15,7 @@
     "newtab": "newtab.html"
   },
   "action": {
-    "default_title": "打开标签矩阵",
+    "default_title": "Open ChromeTabX",
     "default_icon": {
       "16": "icons/icon-16.png",
       "32": "icons/icon-32.png",

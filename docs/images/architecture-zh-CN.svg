@@ -29,7 +29,7 @@
 <path d="M972 512h372" stroke="#e3e9f2"/>
 <text x="972" y="557" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#218267" font-weight="700">减少不必要的页面</text>
 <rect x="64" y="640" width="1304" height="144" rx="18" fill="#eaf0fa"/>
-<text x="88" y="689" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#17243b" font-weight="600">可选 macOS 监控：观察 Chrome 内存与 CPU 占用</text>
+<text x="88" y="689" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="24" fill="#17243b" font-weight="600">可选 macOS 监控：观察 Chrome 内存占用</text>
 <text x="88" y="742" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="23" fill="#52627a" font-weight="400">设置：语言 · 配置后可用的捐款入口</text>
 <text x="64" y="838" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="22" fill="#52627a" font-weight="400">关闭活跃页面有助于降低资源占用，实际提速效果因页面而异。</text>
 <text x="64" y="892" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="18" fill="#687890" font-weight="400">本机运行 · 无需账号 · 产品信息架构示意，并非实际截图</text>

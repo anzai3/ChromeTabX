@@ -38,7 +38,7 @@ flowchart TD
     E2 --> G
     G --> H[May reduce memory and CPU usage]
     B --> I[Optional macOS resource monitor]
-    I --> J[Observe total Chrome memory and CPU]
+    I --> J[Observe total Chrome memory]
     B --> K[Settings: language and optional donations]
 ```
 
@@ -59,6 +59,10 @@ Your pages stay in Chrome. No account or cloud service is needed.
 
 **[Download & install](#install)** · [中文介绍](README.zh-CN.md) · [Report a problem](https://github.com/anzai3/ChromeTabX/issues)
 
+## Chrome Web Store release preparation
+
+Version 1.6.5 standardizes the extension name as ChromeTabX and adds the [privacy policy](PRIVACY.md), [English/Chinese store listing](docs/store/LISTING.md) and a runtime-only package builder. Run `python3 scripts/package-store.py`; the ZIP is written to the ignored `releases/` directory. Store upload and review submission are not complete. See [submission status](docs/store/STATUS.md).
+
 ## Features
 
 - **All windows in one place.** Every new-tab page shows tabs from all managed windows, with no window selector.
@@ -67,7 +71,7 @@ Your pages stay in Chrome. No account or cloud service is needed.
 - **Keep one copy of a URL.** Preview duplicate tabs before confirming cleanup across windows.
 - **Simple tab controls.** Open, preview, or close tabs in a card view.
 - **English and Simplified Chinese.** Follow Chrome's UI language by default, or switch instantly without losing search and filters.
-- **Optional Chrome metrics on macOS.** A local helper displays total Chrome memory and CPU usage.
+- **Optional Chrome metrics on macOS.** A local helper displays total Chrome memory usage.
 
 ## Install
 
@@ -121,7 +125,7 @@ Groups with at least six tabs can expose up to three secondary categories based 
 
 Last-access labels use Chrome's `lastAccessed` timestamp, not publication dates or visit frequency. Unknown timestamps are not estimated. The code retains inactivity-filtering logic, but the simplified interface currently has no dedicated inactive-tabs navigation entry.
 
-## Optional macOS memory and CPU monitor
+## Optional macOS memory monitor
 
 Tab management works without the helper. To enable metrics:
 
@@ -135,9 +139,9 @@ Tab management works without the helper. To enable metrics:
 The helper uses Native Messaging and permits only the extension ID supplied during installation. It reads local Chrome process statistics; it does not accept arbitrary commands or upload measurements.
 
 - **Memory:** total resident memory (RSS) across Google Chrome processes. Shared pages may be counted more than once.
-- **CPU:** approximately one second of sampled process CPU time. 100% represents one fully occupied core; multiple cores can exceed 100%.
+The helper also measures CPU, but the dashboard displays memory only.
 - **Scope:** all local Google Chrome windows, profiles, and helper processes.
-- **Refresh:** on each new-tab page load, on manual refresh, and every five minutes while the page is visible. Returning to a page refreshes it if at least five minutes have elapsed since its last attempt. Other activity and retained caches mean closing a tab does not guarantee either number will fall.
+- **Refresh:** on each new-tab page load, on manual refresh, and every five minutes while the page is visible. Returning to a page refreshes it if at least five minutes have elapsed since its last attempt. Other activity and retained caches mean closing a tab does not guarantee memory usage will fall.
 
 A disconnected monitor shows dashes. Check that the helper was installed with the current extension ID, then reload the extension. Other platforms do not currently have a metrics helper.
 
