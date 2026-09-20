@@ -5,9 +5,8 @@ import {findPageText, scanTabs} from './content-search.js';
 import {domain, duplicateGroups, duplicateIds, isInactive, accessLabel} from './core.js';
 const $ = selector => document.querySelector(selector);
 const live = !!globalThis.chrome?.tabs?.query;
-let tabs = [], view = 'all', selectedWindow = 'all', query = '', list = false;
+let tabs = [], view = 'all', query = '', list = false;
 let inactiveDays = 7;
-let currentWindowId = null;
 let titleGroups = new Map(), hierarchy = {children:new Map(),membership:new Map()};
 let searchEpoch = 0, searchTimer, searchBusy = false;
 const bodyMatches = new Map();
@@ -25,16 +24,12 @@ function toast(message) { $('#toast').textContent = message; $('#toast').hidden 
 function guard(fn) { return async (...args) => { try { await fn(...args); } catch(error) { toast(`操作未完成：${error.message}`); } }; }
 async function refresh() {
  if(live) { const all = await chrome.tabs.query({}); tabs = all.filter(t => t.url !== chrome.runtime.getURL('newtab.html') && t.url !== 'chrome://newtab/' && !t.url?.startsWith(chrome.runtime.getURL('newtab.html')+'?')); }
- const wins = [...new Set([...(currentWindowId === null ? [] : [currentWindowId]), ...tabs.map(t => t.windowId)])];
- if(selectedWindow !== 'all' && !wins.includes(Number(selectedWindow))) selectedWindow = 'all';
- $('#window-filter').innerHTML = '<option value="all">所有窗口</option>'+wins.map(id => `<option value="${id}">窗口 ${wins.indexOf(id)+1}</option>`).join('');
- $('#window-filter').value = selectedWindow;
  render();
  if(query.trim()) scheduleSearch();
 }
 function filtered() {
  const dup = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));
- return scopeTabs(tabs,selectedWindow,query,bodyMatches).filter(t => (view === 'all' || (view === 'duplicates' ? dup.has(t.id) : view === 'pinned' ? t.pinned : view === 'inactive' ? isInactive(t,inactiveDays) : view.startsWith('sub:') ? hierarchy.membership.get(view.slice(4))?.ids.includes(t.id) : view.startsWith('category:') && (titleGroups.get(t.id)||'其他')===view.slice(9)))).sort((a,b)=>view==='inactive' ? a.lastAccessed-b.lastAccessed : 0);
+ return scopeTabs(tabs,'all',query,bodyMatches).filter(t => (view === 'all' || (view === 'duplicates' ? dup.has(t.id) : view === 'pinned' ? t.pinned : view === 'inactive' ? isInactive(t,inactiveDays) : view.startsWith('sub:') ? hierarchy.membership.get(view.slice(4))?.ids.includes(t.id) : view.startsWith('category:') && (titleGroups.get(t.id)||'其他')===view.slice(9)))).sort((a,b)=>view==='inactive' ? a.lastAccessed-b.lastAccessed : 0);
 }
 function scheduleSearch() {
  clearTimeout(searchTimer);
@@ -64,7 +59,7 @@ function render() {
  const dupeIds = duplicateIds(tabs), dupSet = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));
  $('#dedupe-count').textContent = dupeIds.length;
  $('#dedupe').disabled = !dupeIds.length || closing;
- const counts=countCategories(scopeTabs(tabs,selectedWindow,query,bodyMatches),hierarchy);
+ const counts=countCategories(scopeTabs(tabs,'all',query,bodyMatches),hierarchy);
  const categoryNames=[...new Set(titleGroups.values())].sort((a,b)=>a==='其他'?1:b==='其他'?-1:(counts.primary.get(b)||0)-(counts.primary.get(a)||0));
  $('#title-categories').innerHTML=`<button data-view="all" style="${colorStyle('全部')}" class="${view==='all'?'active':''}"><span>全部</span><span class="count">${counts.all}</span></button>`+categoryNames.map(name=>`<button style="${colorStyle(name)}" data-view="${esc('category:'+name)}" class="${view==='category:'+name?'active':''}"><span>${esc(name)}</span><span class="count">${counts.primary.get(name)||0}</span></button>${(hierarchy.children.get(name)||[]).map(child=>`<button style="${colorStyle(name,child.name)}" data-view="${esc('sub:'+child.id)}" class="subcategory ${view==='sub:'+child.id?'active':''}"><span>${esc(child.name)}</span><span class="count">${counts.secondary.get(child.id)||0}</span></button>`).join('')}`).join('');
  const title = ({all:'全部标签',duplicates:'重复标签',pinned:'固定标签',inactive:'久未访问'})[view] || (view.startsWith('sub:')?hierarchy.membership.get(view.slice(4))?.name:view.slice(9));
@@ -74,7 +69,7 @@ function render() {
  visible.forEach(t=> { const key=view==='inactive'?'久未访问 · 最久优先':(titleGroups.get(t.id)||'其他'); if(!groups.has(key))groups.set(key,[]); groups.get(key).push(t); });
  $('#content').className=list?'list':'';
 
- $('#content').innerHTML = groups.size ? [...groups].map(([name,items],index)=>`<section class="group" style="${colorStyle(name)}"><div class="group-heading"><span class="dot"></span><h3>${esc(name)}</h3><span class="number">${String(items.length).padStart(2,'0')}</span><span class="line"></span></div><div class="cards">${items.map(t=>`<article class="card" style="${colorStyle(titleGroups.get(t.id)||'其他',view.startsWith('sub:')?view.slice(4):'')}"><div class="card-top"><span class="favicon">${esc(domain(t.url).replace(/^www\./,'')[0]?.toUpperCase() || '↗')}</span><button class="tab-open" data-open="${t.id}" title="${esc(t.title)} · ${esc(t.url)} · ${esc(accessLabel(t))}"><span class="tab-title">${esc(titleSubject(t.title) || '未命名标签')}</span></button><button class="close-tab" data-close="${t.id}" aria-label="关闭 ${esc(t.title)}" title="关闭标签">×</button></div>${query.trim() && bodyMatches.get(t.id)?.url===t.url && bodyMatches.get(t.id)?.matched ? `<p class="match-snippet"><span>正文命中</span> ${esc(bodyMatches.get(t.id).snippet)}</p>` : ''}<p class="page-summary" data-language-ui data-summary="${t.id}" data-summary-state="loading" data-url="${esc(t.url)}" data-title="${esc(t.title)}"></p><div class="last-access">${esc(accessLabel(t))}</div><div class="card-bottom"><button class="preview-button" data-language-ui data-preview="${t.id}" aria-haspopup="dialog">预览</button>${dupSet.has(t.id)?'<span class="badge">重复</span>':''}<button class="pin ${t.pinned?'pinned':''}" data-pin="${t.id}" title="${t.pinned?'取消固定':'固定标签'}" aria-label="${t.pinned?'取消固定':'固定'} ${esc(t.title)}">⌖</button></div></article>`).join('')}</div></section>`).join('') : `<div class="empty"><strong>${query.trim()?(searchBusy?'正在搜索正文…':'没有找到匹配的标签。'):view==='duplicates'?'没有重复标签。':'这里暂时没有标签。'}</strong><p>${query?'换个关键词，或调整窗口筛选。':view==='duplicates'?'没有发现相同网址的重复页面。':view==='inactive'?'没有符合此时长的标签，可以缩短筛选时长。':'打开一些网页，或者选择其他视图。'}</p></div>`;
+ $('#content').innerHTML = groups.size ? [...groups].map(([name,items],index)=>`<section class="group" style="${colorStyle(name)}"><div class="group-heading"><span class="dot"></span><h3>${esc(name)}</h3><span class="number">${String(items.length).padStart(2,'0')}</span><span class="line"></span></div><div class="cards">${items.map(t=>`<article class="card" style="${colorStyle(titleGroups.get(t.id)||'其他',view.startsWith('sub:')?view.slice(4):'')}"><div class="card-top"><span class="favicon">${esc(domain(t.url).replace(/^www\./,'')[0]?.toUpperCase() || '↗')}</span><button class="tab-open" data-open="${t.id}" title="${esc(t.title)} · ${esc(t.url)} · ${esc(accessLabel(t))}"><span class="tab-title">${esc(titleSubject(t.title) || '未命名标签')}</span></button><button class="close-tab" data-close="${t.id}" aria-label="关闭 ${esc(t.title)}" title="关闭标签">×</button></div>${query.trim() && bodyMatches.get(t.id)?.url===t.url && bodyMatches.get(t.id)?.matched ? `<p class="match-snippet"><span>正文命中</span> ${esc(bodyMatches.get(t.id).snippet)}</p>` : ''}<p class="page-summary" data-language-ui data-summary="${t.id}" data-summary-state="loading" data-url="${esc(t.url)}" data-title="${esc(t.title)}"></p><div class="last-access">${esc(accessLabel(t))}</div><div class="card-bottom"><button class="preview-button" data-language-ui data-preview="${t.id}" aria-haspopup="dialog">预览</button>${dupSet.has(t.id)?'<span class="badge">重复</span>':''}<button class="pin ${t.pinned?'pinned':''}" data-pin="${t.id}" title="${t.pinned?'取消固定':'固定标签'}" aria-label="${t.pinned?'取消固定':'固定'} ${esc(t.title)}">⌖</button></div></article>`).join('')}</div></section>`).join('') : `<div class="empty"><strong>${query.trim()?(searchBusy?'正在搜索正文…':'没有找到匹配的标签。'):view==='duplicates'?'没有重复标签。':'这里暂时没有标签。'}</strong><p>${query?'换个关键词试试。':view==='duplicates'?'没有发现相同网址的重复页面。':view==='inactive'?'没有符合此时长的标签，可以缩短筛选时长。':'打开一些网页，或者选择其他视图。'}</p></div>`;
 
 }
 document.addEventListener('click',guard(async event=>{
@@ -87,7 +82,6 @@ document.addEventListener('click',guard(async event=>{
 $('#search').oninput=event=>{query=event.target.value;scheduleSearch();};
 $('#rescan').onclick=()=>scheduleSearch();
 $('#inactive-days').onchange=event=>{inactiveDays=Number(event.target.value);render();};
-$('#window-filter').onchange=event=>{selectedWindow=event.target.value;render();};
 $('#layout').onclick=()=>{list=!list;$('#layout').setAttribute('aria-label',list?'切换卡片视图':'切换列表视图');render();};
 $('#dedupe').onclick=guard(async()=>{await refresh();pendingIds=duplicateIds(tabs);if(!pendingIds.length)return;$('#confirm-text').textContent=`将关闭 ${pendingIds.length} 个重复标签，覆盖所有窗口，每个相同网址保留 1 个。`;$('#duplicate-preview').innerHTML=duplicateGroups(tabs).map(g=>`<div>${esc(g[0].title)} · ${g.length} → 1</div>`).join('');$('#confirm-dialog').showModal();});
 $('#confirm-dialog').addEventListener('close',guard(async()=>{
@@ -96,9 +90,6 @@ $('#confirm-dialog').addEventListener('close',guard(async()=>{
 }));
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)&&!document.querySelector('dialog[open]')){event.preventDefault();$('#search').focus();}});
 async function init(){
- // Resolve the window containing this new-tab page once; later refreshes preserve the user's filter.
- currentWindowId = live ? (await chrome.windows.getCurrent()).id : 1;
- selectedWindow = String(currentWindowId);
  if(live){let debounce;const update=()=>{clearTimeout(debounce);debounce=setTimeout(guard(refresh),120);};for(const name of ['onCreated','onRemoved','onUpdated','onMoved','onAttached','onDetached','onActivated'])chrome.tabs[name].addListener(update);}
  else{tabs=demoRows.map(([title,url],i)=>{return{id:i+1,title,url,windowId:i>8?2:1,pinned:i===0,lastAccessed:Date.now()-[0.1,2,9,35,15,0.5,60,4,8,1,31,3][i]*86400000};});$('#demo-banner').hidden=false;}
  await refresh();

@@ -8,7 +8,7 @@ COPY = {
   'sub':'Open a new tab to manage the pages you already have open.',
   'lanes':[
    ('Find your page',['Search titles and URLs','Search readable page text','Click to return to the original tab'],'Less time hunting for pages'),
-   ('Organize your tabs',['Current window or all windows','Topic cloud + up to 3 subcategories','Cards, lists and pinned tabs'],'Keep lots of tabs manageable'),
+   ('Organize your tabs',['All windows in one view','Topic cloud + up to 3 subcategories','Cards, lists and pinned tabs'],'Keep lots of tabs manageable'),
    ('Clear the clutter',['Review duplicate URLs','Keep one copy per URL','Close pages you no longer need'],'Fewer unnecessary pages')],
   'monitor':'Optional macOS monitor: observe Chrome memory and CPU',
   'settings':'Settings: language · donations when configured',
@@ -19,7 +19,7 @@ COPY = {
   'sub':'打开新标签页，集中管理已经打开的网页，少翻找、更专注。',
   'lanes':[
    ('快速找页面',['搜索标题和网址','搜索可读取的网页正文','点击结果，回到原来的标签'],'减少翻找时间，提高工作效率'),
-   ('分类浏览与管理',['默认当前窗口，可切换所有窗口','主题分类云 + 最多三个二级分类','卡片、列表与固定标签'],'大量标签也能井然有序'),
+   ('分类浏览与管理',['统一展示所有窗口的标签','主题分类云 + 最多三个二级分类','卡片、列表与固定标签'],'大量标签也能井然有序'),
    ('清理多余标签',['先预览重复网址','每个相同网址保留一个','关闭不再需要的页面'],'减少不必要的页面')],
   'monitor':'可选 macOS 监控：观察 Chrome 内存与 CPU 占用',
   'settings':'设置：语言 · 配置后可用的捐款入口',

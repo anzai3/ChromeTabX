@@ -15,7 +15,7 @@
 <rect x="506" y="236" width="420" height="368" rx="20" fill="white" stroke="#d9e2ef"/>
 <text x="530" y="283" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="21" fill="#8151bc" font-weight="700">02</text>
 <text x="530" y="330" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="29" fill="#17243b" font-weight="700">Organize your tabs</text>
-<text x="530" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Current window or all windows</text>
+<text x="530" y="386" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">All windows in one view</text>
 <text x="530" y="430" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Topic cloud + up to 3 subcategories</text>
 <text x="530" y="474" font-family="Arial, Noto Sans CJK SC, PingFang SC, sans-serif" font-size="20" fill="#52627a" font-weight="400">Cards, lists and pinned tabs</text>
 <path d="M530 512h372" stroke="#e3e9f2"/>

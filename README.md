@@ -26,7 +26,7 @@ flowchart TD
     B --> E[Reduce tab clutter]
     C --> C1[Search titles, URLs and readable page text]
     C1 --> C2[Click to return to the original tab]
-    D --> D1[Current window by default / switch windows]
+    D --> D1[All windows in one view]
     D --> D2[Topic categories / up to 3 subcategories]
     D --> D3[Card or list view / pin important tabs]
     E --> E1[Review duplicate URLs / keep one copy]
@@ -51,7 +51,7 @@ flowchart TD
 | Know you opened a page, but cannot find it | Search its title, URL, or readable page text. |
 | Have work, research, and reading scattered across tabs | Browse automatically generated topic categories. |
 | Keep opening the same link again | Review duplicate URLs and close the extra copies. |
-| Have several Chrome windows open | Start with the current window, then switch to all windows when needed. |
+| Have several Chrome windows open | See tabs from every window in one place. |
 
 **Try it:** open a new tab → search for “project” → click the page you were looking for.
 
@@ -61,7 +61,7 @@ Your pages stay in Chrome. No account or cloud service is needed.
 
 ## Features
 
-- **Start with your current window.** New tabs show pages from their own window by default. Use the window selector to browse other windows or all windows.
+- **All windows in one place.** Every new-tab page shows tabs from all managed windows, with no window selector.
 - **Search beyond titles.** Match titles, URLs, and readable text in loaded pages. Content matches include a short excerpt. Press `/` to focus search.
 - **Automatic category cloud.** Shared title keywords become categories. Larger groups can show up to three secondary categories, with consistent colors for browsing.
 - **Keep one copy of a URL.** Preview duplicate tabs before confirming cleanup across windows.
@@ -91,7 +91,7 @@ This is a text excerpt, not an AI-written summary, screenshot or live embedded p
 
 ## Everyday use
 
-Type in the search box to find a page, select a category to narrow the results, and click a page title to switch to that tab and its window. The window selector starts with the current window; choose **All windows** when needed.
+Type in the search box to find a page, select a category to narrow the results, and click a page title to switch to that tab and its window. Tabs from all managed windows are shown together.
 
 Use **Remove duplicates** to review matching URLs before closing extras. Cleanup covers all windows, even when the visible results are filtered. Save unfinished forms before confirming a close.
 
@@ -115,7 +115,7 @@ Search reads loaded, visible text in the main frame. Protected browser pages, re
 
 Local word segmentation extracts shared keywords and filters common filler words, numeric fragments, and known site suffixes. At least two tabs must share a keyword to form a primary category; remaining tabs appear under Other. Each tab has one primary category.
 
-Groups with at least six tabs can expose up to three secondary categories based on additional shared keywords. Secondary categories can overlap, so their counts should not be added together. Category membership is computed from all managed tabs. Sidebar counts and displayed cards both respect the selected window and search query; categories outside that scope show zero. This is keyword grouping, not AI semantic classification.
+Groups with at least six tabs can expose up to three secondary categories based on additional shared keywords. Secondary categories can overlap, so their counts should not be added together. Category membership is computed from all managed tabs. Sidebar counts and displayed cards both respect the search query across all windows; categories outside that scope show zero. This is keyword grouping, not AI semantic classification.
 
 ### Last-access information
 
@@ -136,7 +136,7 @@ The helper uses Native Messaging and permits only the extension ID supplied duri
 
 - **Memory:** total resident memory (RSS) across Google Chrome processes. Shared pages may be counted more than once.
 - **CPU:** approximately one second of sampled process CPU time. 100% represents one fully occupied core; multiple cores can exceed 100%.
-- **Scope:** all local Google Chrome windows, profiles, and helper processes—not just the selected window.
+- **Scope:** all local Google Chrome windows, profiles, and helper processes.
 - **Refresh:** every 10 seconds and after tab closures. Other activity and retained caches mean closing a tab does not guarantee either number will fall.
 
 A disconnected monitor shows dashes. Check that the helper was installed with the current extension ID, then reload the extension. Other platforms do not currently have a metrics helper.
