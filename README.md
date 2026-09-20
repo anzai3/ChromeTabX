@@ -85,7 +85,7 @@ After updating the source, click **Reload** on the extension card and open a new
 
 ## Page summaries and preview
 
-Cards show a one-line page description or opening text. Click **Preview** to open a floating text preview without switching tabs. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
+Cards show a one-line page description or opening text. Hover over a card briefly to see a floating text preview; move away to dismiss it. Click **Preview** for a persistent dialog on touch or keyboard devices. Neither action switches tabs. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
 
 This is a text excerpt, not an AI-written summary, screenshot or live embedded page. Restricted, empty or discarded pages may be unavailable. The extension does not wake discarded tabs or send page content to a server.
 
