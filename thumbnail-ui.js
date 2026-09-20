@@ -27,10 +27,10 @@ async function populate(img){
   try{await img.decode();if(img.isConnected)status.hidden=true;}
   catch{img.hidden=true;status.hidden=false;status.textContent=zh()?'缩略图读取失败':'Thumbnail could not be decoded';}
  }else{
-  status.hidden=false;
-  status.textContent=result.status==='error'?(zh()?'缩略图暂不可用':'Thumbnail unavailable'):(zh()?'正在生成缩略图…':'Preparing thumbnail…');
-  status.title=result.error||'';
-  await chrome.runtime.sendMessage({type:'thumbnail',id,url});
+  img.hidden=true;
+  status.hidden=true;
+  status.textContent='';
+  status.title='';
  }
 }
 function drain(){

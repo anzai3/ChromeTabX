@@ -61,7 +61,7 @@ Your pages stay in Chrome. No account or cloud service is needed.
 
 ## Chrome Web Store release preparation
 
-Version 1.6.5 standardizes the extension name as ChromeTabX and adds the [privacy policy](PRIVACY.md), [English/Chinese store listing](docs/store/LISTING.md) and a runtime-only package builder. Run `python3 scripts/package-store.py`; the ZIP is written to the ignored `releases/` directory. Store upload and review submission are not complete. See [submission status](docs/store/STATUS.md).
+Version 1.6.6 standardizes the extension name as ChromeTabX and adds the [privacy policy](PRIVACY.md), [English/Chinese store listing](docs/store/LISTING.md) and a runtime-only package builder. Run `python3 scripts/package-store.py`; the ZIP is written to the ignored `releases/` directory. Store upload and review submission are not complete. See [submission status](docs/store/STATUS.md).
 
 ## Features
 
@@ -206,8 +206,7 @@ Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese]
 
 Generic tab titles such as “Docs” are checked against the loaded page’s title, document heading, and title metadata. Delayed titles are retried every 15 seconds while the manager is visible; recovered titles are retained for the same tab and URL during that manager session. Sleeping tabs are not reloaded.
 
-Card thumbnails are generated gradually in the background: one page at a time with a two-second pause between jobs; visible cards go first, preferring loaded tabs. Sleeping pages may load temporarily and are discarded again afterward unless the user activates them or audio starts. Captures never select a tab. Images use 320×180 WebP with lazy loading and a session-only cache (up to 512 images / approximately 8 MB, six hours). Failed pages wait at least five minutes before retry. This requires debugger and alarms permissions in addition to screenshot access; Chrome may display a debugging notification. Work is rate-limited, not zero-cost.
+Version 1.6.6 removes debugger-based background screenshots and the debugger/alarms permissions. Thumbnails are captured only while you normally view a loaded page in the focused Chrome window. No tabs are automatically loaded or switched for screenshots. Cached images use 320×180 WebP, up to 512 images / approximately 8 MB, with a six-hour lifetime. Pages without a cached screenshot leave the thumbnail area empty.
 
-Thumbnail scheduling preserves alarm deadlines across background-worker restarts, so opening or refreshing the manager does not postpone the queue.
 
-Thumbnail cards read cached images directly from session storage and show pending/error states instead of silently staying blank. The manager offers an Apply update button when its background version is older than the installed source files.
+Thumbnail cards read cached images directly from session storage. Missing images do not show a perpetual loading message. The manager offers an Apply update button when the background version is older than the installed source files.
