@@ -1,5 +1,6 @@
 // ChromeTabX-only compatibility catalog. New apps use stable message keys.
 export const translations = {
+ '设置':'Settings',
  '标签管家':'Tab Manager','Tab Matrix · 标签矩阵':'Tab Matrix','Chrome 资源占用':'Chrome resource usage','Chrome 占用':'Chrome usage','刷新资源占用':'Refresh resource usage','内存':'Memory','正在连接…':'Connecting…','指标说明与连接':'Metrics & connection',
  '统计本机所有 Google Chrome 窗口及辅助进程。内存为 RSS 合计（共享页可能重复计算）；CPU 为 1 秒采样，单核 100%，多核可超过 100%。':'Includes all local Google Chrome windows and helper processes. Memory is total RSS (shared pages may be counted more than once). CPU is sampled over one second; 100% equals one core.',
  '每 10 秒刷新，关闭标签后重新采样。数值变化也受其他页面影响，不等同于单个标签释放量。':'Refreshes every 10 seconds and after closing tabs. Changes include activity from other pages and do not measure memory freed by a single tab.',
