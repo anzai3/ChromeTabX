@@ -5,7 +5,7 @@ import {findPageText, scanTabs} from './content-search.js';
 import {domain, duplicateGroups, duplicateIds, isInactive, accessLabel} from './core.js';
 const $ = selector => document.querySelector(selector);
 const live = !!globalThis.chrome?.tabs?.query;
-let tabs = [], view = 'all', query = '', list = false;
+let tabs = [], view = 'all', query = '';
 let inactiveDays = 7;
 let titleGroups = new Map(), hierarchy = {children:new Map(),membership:new Map()};
 let searchEpoch = 0, searchTimer, searchBusy = false;
@@ -67,7 +67,6 @@ function render() {
  $('#view-description').textContent=view==='inactive'?`查看至少 ${inactiveDays} 天没有切换到的标签。`:view==='duplicates'?'相同网址，只留一个。清理操作覆盖所有窗口。':'搜索和管理所有打开的网页。';
  const groups = new Map();
  visible.forEach(t=> { const key=view==='inactive'?'久未访问 · 最久优先':(titleGroups.get(t.id)||'其他'); if(!groups.has(key))groups.set(key,[]); groups.get(key).push(t); });
- $('#content').className=list?'list':'';
 
  $('#content').innerHTML = groups.size ? [...groups].map(([name,items],index)=>`<section class="group" style="${colorStyle(name)}"><div class="group-heading"><span class="dot"></span><h3>${esc(name)}</h3><span class="number">${String(items.length).padStart(2,'0')}</span><span class="line"></span></div><div class="cards">${items.map(t=>`<article class="card" style="${colorStyle(titleGroups.get(t.id)||'其他',view.startsWith('sub:')?view.slice(4):'')}"><div class="card-top"><span class="favicon">${esc(domain(t.url).replace(/^www\./,'')[0]?.toUpperCase() || '↗')}</span><button class="tab-open" data-open="${t.id}" title="${esc(t.title)} · ${esc(t.url)} · ${esc(accessLabel(t))}"><span class="tab-title">${esc(titleSubject(t.title) || '未命名标签')}</span></button><button class="close-tab" data-close="${t.id}" aria-label="关闭 ${esc(t.title)}" title="关闭标签">×</button></div>${query.trim() && bodyMatches.get(t.id)?.url===t.url && bodyMatches.get(t.id)?.matched ? `<p class="match-snippet"><span>正文命中</span> ${esc(bodyMatches.get(t.id).snippet)}</p>` : ''}<p class="page-summary" data-language-ui data-summary="${t.id}" data-summary-state="loading" data-url="${esc(t.url)}" data-title="${esc(t.title)}"></p><div class="last-access">${esc(accessLabel(t))}</div><div class="card-bottom"><button class="preview-button" data-language-ui data-preview="${t.id}" aria-haspopup="dialog">预览</button>${dupSet.has(t.id)?'<span class="badge">重复</span>':''}<button class="pin ${t.pinned?'pinned':''}" data-pin="${t.id}" title="${t.pinned?'取消固定':'固定标签'}" aria-label="${t.pinned?'取消固定':'固定'} ${esc(t.title)}">⌖</button></div></article>`).join('')}</div></section>`).join('') : `<div class="empty"><strong>${query.trim()?(searchBusy?'正在搜索正文…':'没有找到匹配的标签。'):view==='duplicates'?'没有重复标签。':'这里暂时没有标签。'}</strong><p>${query?'换个关键词试试。':view==='duplicates'?'没有发现相同网址的重复页面。':view==='inactive'?'没有符合此时长的标签，可以缩短筛选时长。':'打开一些网页，或者选择其他视图。'}</p></div>`;
 
@@ -82,7 +81,6 @@ document.addEventListener('click',guard(async event=>{
 $('#search').oninput=event=>{query=event.target.value;scheduleSearch();};
 $('#rescan').onclick=()=>scheduleSearch();
 $('#inactive-days').onchange=event=>{inactiveDays=Number(event.target.value);render();};
-$('#layout').onclick=()=>{list=!list;$('#layout').setAttribute('aria-label',list?'切换卡片视图':'切换列表视图');render();};
 $('#dedupe').onclick=guard(async()=>{await refresh();pendingIds=duplicateIds(tabs);if(!pendingIds.length)return;$('#confirm-text').textContent=`将关闭 ${pendingIds.length} 个重复标签，覆盖所有窗口，每个相同网址保留 1 个。`;$('#duplicate-preview').innerHTML=duplicateGroups(tabs).map(g=>`<div>${esc(g[0].title)} · ${g.length} → 1</div>`).join('');$('#confirm-dialog').showModal();});
 $('#confirm-dialog').addEventListener('close',guard(async()=>{
  if($('#confirm-dialog').returnValue!=='confirm'||closing)return;closing=true;render();
