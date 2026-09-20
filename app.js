@@ -104,3 +104,12 @@ async function init(){
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)guard(refresh)();});
 }
 guard(init)();
+
+const settingsDialog = $('#settings-dialog');
+$('#open-settings').addEventListener('click', () => settingsDialog.showModal());
+$('#close-settings').addEventListener('click', () => settingsDialog.close());
+settingsDialog.addEventListener('click', event => {
+ if(event.target !== settingsDialog)return;
+ const rect=settingsDialog.getBoundingClientRect();
+ if(event.clientX<rect.left || event.clientX>rect.right || event.clientY<rect.top || event.clientY>rect.bottom)settingsDialog.close();
+});

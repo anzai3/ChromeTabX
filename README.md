@@ -89,7 +89,7 @@ Type in the search box to find a page, select a category to narrow the results, 
 
 Use **Remove duplicates** to review matching URLs before closing extras. Cleanup covers all windows, even when the visible results are filtered. Save unfinished forms before confirming a close.
 
-Open **Settings** in the sidebar to access the language selector. It offers **System**, **简体中文**, and **English**. Unsupported languages fall back to English. Your selection stays on this device. Page titles, excerpts, and extracted category keywords remain in their original language.
+Click the **⚙ Settings** button at the bottom of the sidebar to open the settings dialog to access the language selector. It offers **System**, **简体中文**, and **English**. Unsupported languages fall back to English. Your selection stays on this device. Page titles, excerpts, and extracted category keywords remain in their original language.
 
 ## How it works
 

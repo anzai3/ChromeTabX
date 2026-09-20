@@ -6,7 +6,8 @@
 <aside class="sidebar">
   <a class="brand" href="newtab.html"><span class="brand-symbol">▦</span><span>标签管家<small>Tab Matrix</small></span></a>
   <section class="metrics" aria-label="Chrome 资源占用"><div class="metrics-heading">Chrome 占用<button id="refresh-metrics" aria-label="刷新资源占用" title="刷新资源占用">↻</button></div><div class="metrics-values"><div><span>内存</span><strong id="chrome-memory">—</strong></div><div><span>CPU</span><strong id="chrome-cpu">—</strong></div></div><div id="metrics-state" role="status">正在连接…</div><div id="metrics-delta"></div></section>
-  <details class="settings"><summary>设置</summary><div class="settings-content"><label class="language-picker"><span>语言</span><select id="language" aria-label="语言"><option data-language-ui value="system">跟随系统</option><option value="zh-CN">简体中文</option><option value="en">English</option></select></label><p id="language-hint" data-language-ui class="language-hint"></p><span id="language-status" data-language-ui class="sr-only" role="status"></span><section id="support" class="support" data-language-ui hidden></section></div></details><div class="nav-label category-label">分类云</div><nav id="title-categories"></nav>
+  <div class="nav-label category-label">分类云</div><nav id="title-categories"></nav>
+<div class="sidebar-bottom"><button id="open-settings" aria-haspopup="dialog" aria-controls="settings-dialog"><span aria-hidden="true">⚙</span> <span>设置</span></button></div>
 </aside>
 <main>
   <section class="workspace"><div class="workspace-heading"><div><h2 id="view-title">全部标签 <span id="result-count"></span></h2><p id="view-description">你的数字世界，尽在此处。</p></div><button id="dedupe" class="primary">⌁ 清理重复标签 <span id="dedupe-count">0</span></button></div>
@@ -16,6 +17,7 @@
   <footer><span><i></i> <span id="status">本地运行 · 数据只留在你的浏览器</span></span><span>整理标签，专注当下。</span></footer>
 </main>
 <dialog id="confirm-dialog"><form method="dialog"><div class="eyebrow">整理重复页面</div><h2>清理重复标签</h2><p id="confirm-text"></p><p class="dialog-note">按完整网址匹配，仅处理 HTTP / HTTPS 页面。优先保留固定页、当前活动页，再保留最近使用的一页。关闭可能丢失未提交内容。</p><div id="duplicate-preview"></div><div class="dialog-actions"><button value="cancel">取消</button><button id="confirm-close" value="confirm" class="primary">确认清理</button></div></form></dialog>
+<dialog id="settings-dialog" aria-labelledby="settings-title"><div class="settings-header"><h2 id="settings-title">设置</h2><button id="close-settings" aria-label="关闭设置">×</button></div><div class="settings-content"><label class="language-picker"><span>语言</span><select id="language" aria-label="语言"><option data-language-ui value="system">跟随系统</option><option value="zh-CN">简体中文</option><option value="en">English</option></select></label><p id="language-hint" data-language-ui class="language-hint"></p><span id="language-status" data-language-ui class="sr-only" role="status"></span><section id="support" class="support" data-language-ui hidden></section></div></dialog>
 <div id="toast" role="status" hidden></div>
 <script type="module" src="i18n.js"></script>
 <script type="module" src="app.js"></script>
