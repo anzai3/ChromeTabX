@@ -104,3 +104,6 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 .shortcut-feedback{font-size:12px;color:var(--muted)}.shortcut-feedback:empty{display:none}
 @media(hover:none){#shortcuts .shortcut>button:last-child:not(.shortcut-link){opacity:1}}
 @media(max-width:700px){#shortcuts{flex-basis:auto;flex-wrap:wrap}.toolbar .search{max-width:none}}
+
+#shortcuts{margin-left:auto;justify-content:flex-end;max-width:100%}
+.shortcut-feedback:not(:empty){flex-basis:100%;text-align:right}

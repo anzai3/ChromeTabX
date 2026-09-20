@@ -23,7 +23,7 @@ function render(){
    const fallback=document.createElement('span');fallback.textContent='◎';fallback.setAttribute('aria-hidden','true');link.append(fallback);
    const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.hidden=true;icon.draggable=false;link.append(icon);
    const candidates=iconCandidates(site.url,iconTabs,globalThis.chrome?.runtime);
-   discoverIcons(site.url).then(declared=>{if(icon.isConnected)loadShortcutIcon(icon,fallback,[...declared,...candidates]);});
+   loadShortcutIcon(icon,fallback,candidates,()=>discoverIcons(site.url));
   }else {link.textContent='+';link.title=strings.t('drop');link.onclick=()=>edit(index);}
   group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect='copy';group.classList.add('drag-over');}};
   group.ondragleave=e=>{if(!group.contains(e.relatedTarget))group.classList.remove('drag-over');};
@@ -63,3 +63,10 @@ render();load().catch(()=>{});
 if(storage)chrome.storage.onChanged.addListener((changes,area)=>{if(area==='local'&&Object.keys(changes).some(k=>k.startsWith('shortcut-slot-')))load().catch(()=>{});});
 
 if(globalThis.chrome?.tabs)chrome.tabs.query({}).then(tabs=>{iconTabs=tabs;render();}).catch(()=>{});
+
+if(globalThis.chrome?.tabs?.onUpdated)chrome.tabs.onUpdated.addListener((id,change,tab)=>{
+ if(!change.favIconUrl)return;
+ const index=iconTabs.findIndex(item=>item.id===id);
+ if(index>=0)iconTabs[index]=tab;else iconTabs.push(tab);
+ if(resolveSlots(defaults,custom).some(site=>{try{return site&&new URL(site.url).origin===new URL(tab.url).origin;}catch{return false;}}))render();
+});

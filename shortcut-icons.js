@@ -4,20 +4,23 @@ export function iconCandidates(siteUrl,tabs,runtime) {
  const matching=tabs.filter(tab=>{try{return new URL(tab.url).origin===site.origin;}catch{return false;}})
   .sort((a,b)=>Number(b.url===siteUrl)-Number(a.url===siteUrl));
  const icons=matching.map(tab=>tab.favIconUrl).filter(url=>typeof url==='string'&&(/^https?:\/\//i.test(url)||/^data:image\//i.test(url)));
- icons.push(new URL('/favicon.ico',site).href);
  if(runtime?.getURL){
   for(const page of [...matching.map(tab=>tab.url),siteUrl]){
    const cached=new URL(runtime.getURL('/_favicon/'));cached.searchParams.set('pageUrl',page);cached.searchParams.set('size','32');icons.push(cached.href);
   }
  }
+ icons.push(new URL('/favicon.ico',site).href);
  return [...new Set(icons)].slice(0,8);
 }
-export function loadShortcutIcon(img,fallback,candidates) {
+export function loadShortcutIcon(img,fallback,candidates,discover) {
  let index=0,timer;
  const next=()=>{
   clearTimeout(timer);
   img.hidden=true;
-  if(index>=candidates.length){img.remove();fallback.hidden=false;return;}
+  if(index>=candidates.length){
+   if(discover){const lookup=discover;discover=null;lookup().then(extra=>{candidates.push(...extra.filter(v=>!candidates.includes(v)));next();},next);return;}
+   img.remove();fallback.hidden=false;return;
+  }
   img.src=candidates[index++];timer=setTimeout(next,3500);
  };
  img.referrerPolicy='no-referrer';
@@ -38,15 +41,15 @@ export function declaredIcons(doc,pageUrl) {
 }
 const discoveries=new Map();
 export function discoverIcons(url) {
- const origin=new URL(url).origin;
- if(!discoveries.has(origin))discoveries.set(origin,(async()=>{
+ const page=new URL(url);page.hash='';const key=page.href;
+ if(!discoveries.has(key))discoveries.set(key,(async()=>{
   try{
-   const response=await fetch(origin+'/',{credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(4500)});
+   const response=await fetch(key,{credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(4500)});
    if(!response.ok||!response.body)return [];
    const reader=response.body.getReader(),decoder=new TextDecoder();let html='',bytes=0;
    try{while(bytes<262144){const {value,done}=await reader.read();if(done)break;bytes+=value.length;html+=decoder.decode(value,{stream:true});if(/<\/head\s*>/i.test(html))break;}}finally{await reader.cancel();}
-   return declaredIcons(new DOMParser().parseFromString(html,'text/html'),response.url||origin+'/');
+   return declaredIcons(new DOMParser().parseFromString(html,'text/html'),response.url||key);
   }catch{return [];}
  })());
- return discoveries.get(origin);
+ return discoveries.get(key);
 }

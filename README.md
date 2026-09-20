@@ -244,3 +244,7 @@ Bookmark editing uses only name and URL. Icons are resolved automatically; the m
 ## 1.7.8
 
 Shortcut icons also read the website homepage’s declared favicon and touch-icon links. Lookup omits credentials, times out after 4.5 seconds, and stops reading at the end of the head or a bounded size. Results are reused per website while the manager stays open. If no icon loads, a neutral website symbol replaces the letter.
+
+## 1.7.9
+
+Shortcut icons align to the right. Existing tab icons and Chrome’s page-specific cache load before network discovery. Discovery reads the actual bookmark URL rather than always the homepage; newly reported tab icons refresh matching shortcuts. Sites that block icon access can still show a fallback.
