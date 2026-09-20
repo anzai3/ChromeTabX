@@ -23,7 +23,7 @@ chrome.tabs.onActivated.addListener(({tabId})=>schedule(tabId));
 chrome.tabs.onUpdated.addListener((id,change,tab)=>{if(tab.active && change.status==='complete')schedule(id);});
 chrome.tabs.onRemoved.addListener(id=>chrome.storage.session.remove(`thumb:${id}`).catch(()=>{}));
 chrome.runtime.onMessage.addListener((message,sender,reply)=>{
- if(sender.id!==chrome.runtime.id || sender.tab || message?.type!=='thumbnail')return;
+ if(sender.id!==chrome.runtime.id || !sender.url?.startsWith(chrome.runtime.getURL('newtab.html')) || message?.type!=='thumbnail')return;
  (async()=>{
   const tab=await chrome.tabs.get(message.id);
   if(tab.incognito || tab.url!==message.url)return null;
