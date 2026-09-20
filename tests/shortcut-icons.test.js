@@ -19,3 +19,9 @@ test('all sources failing retains the letter fallback',()=>{
  loadShortcutIcon(img,fallback,['https://a/icon']);img.onerror();
  assert.equal(img.removed,true);assert.equal(fallback.hidden,false);
 });
+test('declared favicon resolves relative URLs and ignores unrelated or unsafe links',async()=>{
+ const {declaredIcons}=await import('../shortcut-icons.js');
+ const link=(rel,href)=>({getAttribute:key=>key==='rel'?rel:href});
+ const doc={querySelector:()=>null,querySelectorAll:()=>[link('shortcut icon','/assets/logo.svg'),link('stylesheet','/style.css'),link('icon','javascript:alert(1)'),link('apple-touch-icon','touch.png')]};
+ assert.deepEqual(declaredIcons(doc,'https://example.com/app/'),['https://example.com/assets/logo.svg','https://example.com/app/touch.png']);
+});

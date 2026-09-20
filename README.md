@@ -240,3 +240,7 @@ Shortcut editing includes an optional Favicon URL. A custom HTTP/HTTPS image URL
 ## 1.7.7
 
 Bookmark editing uses only name and URL. Icons are resolved automatically; the manual favicon field has been removed. A blank name defaults to the website hostname. Drag-and-drop and opening bookmarks in a new tab remain available.
+
+## 1.7.8
+
+Shortcut icons also read the website homepage’s declared favicon and touch-icon links. Lookup omits credentials, times out after 4.5 seconds, and stops reading at the end of the head or a bounded size. Results are reused per website while the manager stays open. If no icon loads, a neutral website symbol replaces the letter.

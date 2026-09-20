@@ -15,7 +15,7 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 - If you separately install the optional macOS native helper, it reads local Chrome process resource statistics and returns them to the extension. The extension displays aggregate memory usage. The helper is not included in the store package and is not needed for tab management.
 
 
-Website shortcut icons use open tabs’ favicon URLs, the website’s favicon.ico, and Chrome’s favicon API. Loading an icon may contact its website or icon CDN, with no referrer sent. ChromeTabX does not send shortcut URLs to a third-party icon service.
+The extension may fetch a website homepage without credentials to discover its declared icon links; it does not execute the fetched page scripts. Website shortcut icons use open tabs’ favicon URLs, the website’s favicon.ico, and Chrome’s favicon API. Loading an icon may contact its website or icon CDN, with no referrer sent. ChromeTabX does not send shortcut URLs to a third-party icon service.
 
 ## Network activity and sharing
 

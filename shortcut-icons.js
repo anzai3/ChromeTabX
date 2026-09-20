@@ -25,3 +25,28 @@ export function loadShortcutIcon(img,fallback,candidates) {
  img.onerror=next;
  next();
 }
+
+export function declaredIcons(doc,pageUrl) {
+ let base=pageUrl;
+ try{const href=doc.querySelector('base[href]')?.getAttribute('href');if(href)base=new URL(href,pageUrl).href;}catch{}
+ const result=[];
+ for(const node of doc.querySelectorAll('link[rel][href]')){
+  if(!node.getAttribute('rel').toLowerCase().split(/\s+/).some(r=>r==='icon'||r==='apple-touch-icon'))continue;
+  try{const url=new URL(node.getAttribute('href'),base);if(/^https?:$/.test(url.protocol))result.push(url.href);}catch{}
+ }
+ return [...new Set(result)].slice(0,6);
+}
+const discoveries=new Map();
+export function discoverIcons(url) {
+ const origin=new URL(url).origin;
+ if(!discoveries.has(origin))discoveries.set(origin,(async()=>{
+  try{
+   const response=await fetch(origin+'/',{credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(4500)});
+   if(!response.ok||!response.body)return [];
+   const reader=response.body.getReader(),decoder=new TextDecoder();let html='',bytes=0;
+   try{while(bytes<262144){const {value,done}=await reader.read();if(done)break;bytes+=value.length;html+=decoder.decode(value,{stream:true});if(/<\/head\s*>/i.test(html))break;}}finally{await reader.cancel();}
+   return declaredIcons(new DOMParser().parseFromString(html,'text/html'),response.url||origin+'/');
+  }catch{return [];}
+ })());
+ return discoveries.get(origin);
+}

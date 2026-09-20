@@ -1,4 +1,4 @@
-import {iconCandidates,loadShortcutIcon} from './shortcut-icons.js';
+import {iconCandidates,loadShortcutIcon,discoverIcons} from './shortcut-icons.js';
 import {i18n} from './i18n.js';
 import {createI18n} from './packages/app-i18n/index.js';
 import {safeUrl,resolveSlots,DEFAULT_SITES,droppedSite} from './shortcuts.js';
@@ -20,9 +20,10 @@ function render(){
   link.setAttribute('aria-label',site?site.name:strings.t('add'));
   if(site){
    link.href=site.url;link.target='_blank';link.rel='noopener noreferrer';link.title=`${site.name}\n${site.url}`;
-   const fallback=document.createElement('span');fallback.textContent=site.name.slice(0,1).toUpperCase();fallback.setAttribute('aria-hidden','true');link.append(fallback);
-   const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.draggable=false;link.append(icon);
-   loadShortcutIcon(icon,fallback,iconCandidates(site.url,iconTabs,globalThis.chrome?.runtime));
+   const fallback=document.createElement('span');fallback.textContent='◎';fallback.setAttribute('aria-hidden','true');link.append(fallback);
+   const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.hidden=true;icon.draggable=false;link.append(icon);
+   const candidates=iconCandidates(site.url,iconTabs,globalThis.chrome?.runtime);
+   discoverIcons(site.url).then(declared=>{if(icon.isConnected)loadShortcutIcon(icon,fallback,[...declared,...candidates]);});
   }else {link.textContent='+';link.title=strings.t('drop');link.onclick=()=>edit(index);}
   group.ondragover=e=>{if([...e.dataTransfer.types].some(t=>['text/uri-list','text/plain'].includes(t))){e.preventDefault();e.dataTransfer.dropEffect='copy';group.classList.add('drag-over');}};
   group.ondragleave=e=>{if(!group.contains(e.relatedTarget))group.classList.remove('drag-over');};
