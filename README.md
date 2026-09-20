@@ -1,12 +1,29 @@
 # ChromeTabX
 
-**A clearer home for your Chrome tabs.**
+**Too many tabs open? Find the page you need—and close the extra copies.**
 
 **English** · [简体中文](README.zh-CN.md)
 
-ChromeTabX replaces Chrome's new-tab page with a lightweight workspace for finding, organizing, and closing tabs. Search across open pages, browse automatic title-based categories, and remove duplicate URLs—all locally, without an account or cloud service.
+ChromeTabX is a **Chrome extension that turns your new-tab page into a searchable list of your open tabs**. Instead of clicking through tiny tabs, open a new tab, type a word you remember, and jump straight to the page.
 
-Also displayed in the extension as **Tab Matrix**. Built with vanilla JavaScript and Manifest V3. No dependencies or build step are required to load the extension.
+![ChromeTabX explained: turn crowded tabs into a searchable new-tab dashboard with topic categories and duplicate cleanup.](docs/images/chrometabx-overview.png)
+
+*Feature illustration, not a screenshot of the extension.*
+
+## Does this sound familiar?
+
+| When you… | ChromeTabX helps you… |
+| --- | --- |
+| Know you opened a page, but cannot find it | Search its title, URL, or readable page text. |
+| Have work, research, and reading scattered across tabs | Browse automatically generated topic categories. |
+| Keep opening the same link again | Review duplicate URLs and close the extra copies. |
+| Have several Chrome windows open | Start with the current window, then switch to all windows when needed. |
+
+**Try it:** open a new tab → search for “project” → click the page you were looking for.
+
+Your pages stay in Chrome. No account or cloud service is needed.
+
+**[Download & install](#install)** · [中文介绍](README.zh-CN.md) · [Report a problem](https://github.com/anzai3/ChromeTabX/issues)
 
 ## Features
 
@@ -100,6 +117,8 @@ No account, analytics, remote scripts, external fonts, or cloud processing are u
 Incognito access is not enabled by default. The extension's own new-tab pages are excluded from the managed tab list.
 
 ## Development
+
+The extension also uses the name **Tab Matrix** in its UI. Built with vanilla JavaScript and Manifest V3, it requires no dependencies or build step to load.
 
 Use a recent Node.js version with its built-in test runner:
 
