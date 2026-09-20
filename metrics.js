@@ -1,9 +1,12 @@
 const extensionPage = location.protocol === 'chrome-extension:';
 const live = !!globalThis.chrome?.runtime?.sendNativeMessage;
-let busy = false;
+const REFRESH_INTERVAL = 5 * 60 * 1000;
+let busy = false, lastAttempt = null, refreshTimer;
 const $ = id => document.getElementById(id);
-export async function updateMetrics() {
- if(busy || document.hidden)return;
+export async function updateMetrics({initial = false} = {}) {
+ if(busy || (document.hidden && !initial))return;
+ clearTimeout(refreshTimer);
+ lastAttempt = Date.now();
  busy=true;
  $('refresh-metrics').disabled=true;
  $('refresh-metrics').classList.add('is-loading');
@@ -22,9 +25,12 @@ export async function updateMetrics() {
   $('refresh-metrics').disabled=false;
   $('refresh-metrics').classList.remove('is-loading');
   $('refresh-metrics').setAttribute('aria-busy','false');
+  refreshTimer=setTimeout(refreshIfDue,REFRESH_INTERVAL);
  }
 }
-$('refresh-metrics').onclick=updateMetrics;
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateMetrics();});
-setInterval(updateMetrics,10000);
-updateMetrics();
+$('refresh-metrics').onclick=()=>updateMetrics();
+function refreshIfDue(){
+ if(!document.hidden && (lastAttempt === null || Date.now()-lastAttempt >= REFRESH_INTERVAL))updateMetrics();
+}
+document.addEventListener('visibilitychange',refreshIfDue);
+updateMetrics({initial:true});

@@ -137,7 +137,7 @@ The helper uses Native Messaging and permits only the extension ID supplied duri
 - **Memory:** total resident memory (RSS) across Google Chrome processes. Shared pages may be counted more than once.
 - **CPU:** approximately one second of sampled process CPU time. 100% represents one fully occupied core; multiple cores can exceed 100%.
 - **Scope:** all local Google Chrome windows, profiles, and helper processes.
-- **Refresh:** every 10 seconds and after tab closures. Other activity and retained caches mean closing a tab does not guarantee either number will fall.
+- **Refresh:** on each new-tab page load, on manual refresh, and every five minutes while the page is visible. Returning to a page refreshes it if at least five minutes have elapsed since its last attempt. Other activity and retained caches mean closing a tab does not guarantee either number will fall.
 
 A disconnected monitor shows dashes. Check that the helper was installed with the current extension ID, then reload the extension. Other platforms do not currently have a metrics helper.
 

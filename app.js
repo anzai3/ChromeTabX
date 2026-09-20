@@ -1,5 +1,5 @@
 import {scopeTabs,countCategories} from './tab-scope.js';
-import {updateMetrics} from './metrics.js';
+import './metrics.js';
 import {titleHierarchy,titleSubject} from './title-rules.js';
 import {findPageText, scanTabs} from './content-search.js';
 import {domain, duplicateGroups, duplicateIds, isInactive} from './core.js';
@@ -75,7 +75,7 @@ document.addEventListener('click',guard(async event=>{
  const button=event.target.closest('button'); if(!button)return;
  if(button.dataset.view){view=button.dataset.view;render();}
  if(button.dataset.open){const t=tabs.find(t=>t.id===Number(button.dataset.open)); if(live){await chrome.tabs.update(t.id,{active:true});await chrome.windows.update(t.windowId,{focused:true});}else toast('预览模式：加载扩展后可跳转到真实标签');}
- if(button.dataset.close){const id=Number(button.dataset.close);if(live)await chrome.tabs.remove(id);else tabs=tabs.filter(t=>t.id!==id);await refresh();toast('标签已关闭');setTimeout(updateMetrics,1200);}
+ if(button.dataset.close){const id=Number(button.dataset.close);if(live)await chrome.tabs.remove(id);else tabs=tabs.filter(t=>t.id!==id);await refresh();toast('标签已关闭');}
  if(button.dataset.pin){const t=tabs.find(t=>t.id===Number(button.dataset.pin));if(live)await chrome.tabs.update(t.id,{pinned:!t.pinned});else t.pinned=!t.pinned;await refresh();}
 }));
 $('#search').oninput=event=>{query=event.target.value;scheduleSearch();};
@@ -84,7 +84,7 @@ $('#inactive-days').onchange=event=>{inactiveDays=Number(event.target.value);ren
 $('#dedupe').onclick=guard(async()=>{await refresh();pendingIds=duplicateIds(tabs);if(!pendingIds.length)return;$('#confirm-text').textContent=`将关闭 ${pendingIds.length} 个重复标签，覆盖所有窗口，每个相同网址保留 1 个。`;$('#duplicate-preview').innerHTML=duplicateGroups(tabs).map(g=>`<div>${esc(g[0].title)} · ${g.length} → 1</div>`).join('');$('#confirm-dialog').showModal();});
 $('#confirm-dialog').addEventListener('close',guard(async()=>{
  if($('#confirm-dialog').returnValue!=='confirm'||closing)return;closing=true;render();
- try {await refresh();const currentIds=new Set(duplicateIds(tabs));const ids=pendingIds.filter(id=>currentIds.has(id));let removed=0;for(const id of ids){if(live){try{await chrome.tabs.remove(id);removed++;}catch{}}else{tabs=tabs.filter(t=>t.id!==id);removed++;}}toast(`已清理 ${removed} 个重复标签${removed<ids.length?'，部分标签已变更或无法关闭':''}`);}finally{closing=false;pendingIds=[];await refresh();setTimeout(updateMetrics,1200);}
+ try {await refresh();const currentIds=new Set(duplicateIds(tabs));const ids=pendingIds.filter(id=>currentIds.has(id));let removed=0;for(const id of ids){if(live){try{await chrome.tabs.remove(id);removed++;}catch{}}else{tabs=tabs.filter(t=>t.id!==id);removed++;}}toast(`已清理 ${removed} 个重复标签${removed<ids.length?'，部分标签已变更或无法关闭':''}`);}finally{closing=false;pendingIds=[];await refresh();}
 }));
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)&&!document.querySelector('dialog[open]')){event.preventDefault();$('#search').focus();}});
 async function init(){
