@@ -1,10 +1,10 @@
 # Store submission status
 
-Updated: 2026-09-20. Version: 1.7.1. **Not uploaded, submitted or published.**
+Updated: 2026-09-20. Version: 1.7.2. **Not uploaded, submitted or published.**
 
 ## Prepared
 
-- Runtime-only ZIP: run `python3 scripts/package-store.py` to create `releases/ChromeTabX-1.7.1-store.zip`.
+- Runtime-only ZIP: run `python3 scripts/package-store.py` to create `releases/ChromeTabX-1.7.2-store.zip`.
 - English listing with Simplified Chinese translation: [LISTING.md](LISTING.md).
 - Public privacy policy: [PRIVACY.md](../../PRIVACY.md).
 - Permission explanations and reviewer instructions in the listing document.

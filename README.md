@@ -218,3 +218,7 @@ A shorter search field shares its row with five editable website shortcuts. Reco
 ## 1.7.1 — Icon shortcuts and drag-and-drop
 
 Frequent sites use compact website icons from Chrome’s favicon API. Hover for the name and URL; hover or keyboard-focus reveals editing. Drop an HTTP/HTTPS link onto a slot to save or replace it. A missing icon falls back to the first letter. The favicon permission enables Chrome-provided icons without a third-party icon service.
+
+## 1.7.2
+
+Website shortcuts open in a new tab, keeping the tab manager open.

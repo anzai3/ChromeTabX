@@ -18,7 +18,7 @@ function render(){
   const link=document.createElement(site?'a':'button');link.className='shortcut-link';
   link.setAttribute('aria-label',site?site.name:strings.t('add'));
   if(site){
-   link.href=site.url;link.title=`${site.name}\n${site.url}`;
+   link.href=site.url;link.target='_blank';link.rel='noopener noreferrer';link.title=`${site.name}\n${site.url}`;
    const fallback=document.createElement('span');fallback.textContent=site.name.slice(0,1).toUpperCase();fallback.setAttribute('aria-hidden','true');link.append(fallback);
    if(globalThis.chrome?.runtime?.getURL){
     const icon=document.createElement('img');icon.width=24;icon.height=24;icon.alt='';icon.draggable=false;
