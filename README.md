@@ -85,9 +85,9 @@ After updating the source, click **Reload** on the extension card and open a new
 
 ## Page summaries and preview
 
-Cards show a one-line page description or opening text. Click **Preview** to open a text preview dialog without switching tabs. Hovering over a card does not open a preview. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
+Cards show a one-line page description or opening text. Hover over the **Preview button** to temporarily load the webpage in a floating frame; move away to destroy it. Hovering elsewhere on a card does nothing. Click **Preview** for the existing text preview dialog. Only cards near the viewport are read, with two concurrent reads and a short in-memory cache. The preview can open the original tab on request.
 
-This is a text excerpt, not an AI-written summary, screenshot or live embedded page. Restricted, empty or discarded pages may be unavailable. The extension does not wake discarded tabs or send page content to a server.
+Card summaries and the click dialog use text excerpts, not AI-written summaries. The hover frame separately requests the webpage and may run its scripts or use its login cookies; it is not a mirror of the original tab. Sites may block embedding or require sign-in. The frame is sandboxed without forms, popups, downloads or top-level navigation; use **Open original tab** if it cannot display. Restricted, empty or discarded pages may be unavailable. The extension does not wake discarded tabs or send page content to a server.
 
 ## Everyday use
 
@@ -145,7 +145,7 @@ To uninstall the helper, remove its files from `~/Library/Application Support/Ta
 
 ## Privacy and permissions
 
-No account, analytics, remote scripts, external fonts, or cloud processing are used. Search excerpts stay in the new-tab page's memory; they are not persisted or uploaded. Language preferences are stored locally.
+The extension itself uses no account, analytics, remote scripts, external fonts, or cloud processing. Hover previews load the selected website directly; that website’s own network requests and policies apply. Search excerpts stay in the new-tab page's memory; they are not persisted or uploaded. Language preferences are stored locally.
 
 | Permission | Purpose |
 | --- | --- |
