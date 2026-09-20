@@ -205,3 +205,5 @@ Generic tab titles such as “Docs” are checked against the loaded page’s ti
 Card thumbnails are generated gradually in the background: one page at a time with a two-second pause between jobs; visible cards go first, preferring loaded tabs. Sleeping pages may load temporarily and are discarded again afterward unless the user activates them or audio starts. Captures never select a tab. Images use 320×180 WebP with lazy loading and a session-only cache (up to 512 images / approximately 8 MB, six hours). Failed pages wait at least five minutes before retry. This requires debugger and alarms permissions in addition to screenshot access; Chrome may display a debugging notification. Work is rate-limited, not zero-cost.
 
 Thumbnail scheduling preserves alarm deadlines across background-worker restarts, so opening or refreshing the manager does not postpone the queue.
+
+Thumbnail cards read cached images directly from session storage and show pending/error states instead of silently staying blank. The manager offers an Apply update button when its background version is older than the installed source files.

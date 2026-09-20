@@ -18,18 +18,21 @@ export async function captureBackgroundTab(api, tab, resize) {
    }
   }
   const current=await api.tabs.get(tab.id);
-  if(current.active || current.incognito || current.status!=='complete' || current.url!==startUrl)return;
+  if(current.active || current.incognito || current.url!==startUrl)throw Error('Page changed during capture');
+  if(current.status!=='complete')throw Error('Page has not finished loading');
   await api.debugger.attach(target,'1.3');attached=true;
   let timeout;
   const result=await Promise.race([
-   api.debugger.sendCommand(target,'Page.captureScreenshot',{format:'jpeg',quality:40,captureBeyondViewport:false}),
-   new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('Screenshot timed out')),5000);})
+   api.debugger.sendCommand(target,'Page.captureScreenshot',{format:'jpeg',quality:40,fromSurface:true,captureBeyondViewport:false,optimizeForSpeed:true}),
+   new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('Screenshot timed out')),12000);})
   ]).finally(()=>clearTimeout(timeout));
+  if(!result?.data)throw Error('Chrome returned no screenshot');
   const image=await resize('data:image/jpeg;base64,'+result.data);
   const after=await api.tabs.get(tab.id);
-  if(after.url!==startUrl || after.incognito || image.length>60000)return;
+  if(after.url!==startUrl || after.incognito)throw Error('Page changed during capture');
+  if(image.length>60000)throw Error('Thumbnail exceeded size limit');
   await pruneThumbnails(api);
-  await api.storage.session.set({[`thumb:${tab.id}`]:{url:startUrl,time:Date.now(),image}});
+  await api.storage.session.set({[`thumb:${tab.id}`]:{url:startUrl,time:Date.now(),image},[`thumb-state:${tab.id}`]:{url:startUrl,status:'ready'}});
  }finally{
   if(attached)await api.debugger.detach(target).catch(()=>{});
   if(woke){
