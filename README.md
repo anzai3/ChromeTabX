@@ -201,3 +201,5 @@ Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese]
 [MIT](LICENSE). You may use, modify, and distribute the code under the license terms.
 
 Generic tab titles such as “Docs” are checked against the loaded page’s title, document heading, and title metadata. Delayed titles are retried every 15 seconds while the manager is visible; recovered titles are retained for the same tab and URL during that manager session. Sleeping tabs are not reloaded.
+
+Card thumbnails are local screenshots of pages you actually visit, captured after a 1.2-second pause. Images are resized to 320×180 WebP, loaded only near the viewport, and cached in memory for up to 30 minutes (100 images maximum). No background tabs are activated; uncached cards remain blank. Incognito, file, and browser pages are excluded. Screenshot capture requires `<all_urls>` and session caching uses `storage`; reload the extension after updating.

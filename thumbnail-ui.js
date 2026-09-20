@@ -1,0 +1,24 @@
+const root=document.getElementById('content');
+const live=location.protocol==='chrome-extension:';
+const queue=[];let active=0;
+const observer=new IntersectionObserver(entries=>{
+ for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target);}
+ drain();
+},{rootMargin:'80px'});
+function drain(){
+ while(active<2 && queue.length){
+  const img=queue.shift();if(!img.isConnected)continue;
+  active++;
+  chrome.runtime.sendMessage({type:'thumbnail',id:Number(img.dataset.thumbnail),url:img.dataset.url}).then(data=>{
+   if(img.isConnected && typeof data==='string' && data.startsWith('data:image/webp;base64,')){
+    img.onload=()=>{img.hidden=false;};img.src=data;
+   }
+  }).catch(()=>{}).finally(()=>{active--;drain();});
+ }
+}
+const watched=new Set();
+function discover(){
+ for(const img of watched)if(!img.isConnected){observer.unobserve(img);watched.delete(img);}
+ root.querySelectorAll('[data-thumbnail]').forEach(img=>{if(!watched.has(img)){watched.add(img);observer.observe(img);}});
+}
+if(live){new MutationObserver(discover).observe(root,{childList:true});discover();}
