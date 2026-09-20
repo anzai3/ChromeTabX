@@ -20,7 +20,7 @@ function labels(){
  const c=copy();document.getElementById('preview-note').textContent=c.note;
  document.getElementById('preview-close').setAttribute('aria-label',c.close);
  document.getElementById('preview-open').textContent=c.open;
- document.querySelectorAll('[data-preview]').forEach(b=>b.textContent=c.preview);
+ document.querySelectorAll('[data-preview] .action-label').forEach(label=>label.textContent=c.preview);
  document.querySelectorAll('[data-summary-state]').forEach(n=>{if(n.dataset.summaryState!=='done')n.textContent='';});
 }
 async function getTab(id,node){return live?chrome.tabs.get(id):{id,url:node.dataset.url,title:node.dataset.title};}

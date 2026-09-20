@@ -1,5 +1,6 @@
 // ChromeTabX-only compatibility catalog. New apps use stable message keys.
 export const translations = {
+ '关闭':'Close',
  '换个关键词试试。':'Try another keyword.',
  '设置':'Settings','关闭设置':'Close settings',
  '标签管家':'Tab Manager','Tab Matrix · 标签矩阵':'Tab Matrix','Chrome 资源占用':'Chrome resource usage','Chrome 占用':'Chrome usage','刷新资源占用':'Refresh resource usage','内存':'Memory','正在连接…':'Connecting…','指标说明与连接':'Metrics & connection',
