@@ -6,7 +6,7 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 
 ## Information processed on your device
 
-- Recent browsing history (up to 500 URLs visited in the last 30 days and their visit timestamps) is read locally to rank five frequent websites. History results stay in memory. Custom shortcut names and URLs are saved in local extension storage until reset or uninstalled; they are not uploaded.
+- Default shortcuts are Gmail, DeepSeek and Feishu. No browsing history is read for recommendations. Custom shortcut names and URLs are saved locally until reset or uninstalled, and are not uploaded.
 
 
 - Open-tab titles, URLs, window IDs and tab status are used to display, search, categorize and manage your tabs. Chrome-provided last-access information may be used for tab filtering.
@@ -42,4 +42,4 @@ ChromeTabX 在本地处理打开标签的标题、网址、状态、可读取正
 
 预览会访问原网站，可能使用已有登录状态；网站自身的隐私政策适用。可选 macOS 辅助程序只在本机读取 Chrome 进程资源统计，商店安装包不包含该程序。扩展没有广告、分析追踪或开发者数据收集服务，不出售浏览数据。隐私问题可通过上述 GitHub Issues 联系，请勿公开提交私人网页内容。
 
-常用网址功能读取最近 30 天最多 500 个近期网址及访问时间，在本机统计推荐。历史数据仅在内存处理；自定义名称和链接保存在扩展本地存储，恢复推荐或卸载后删除，不上传。
+常用网址默认使用 Gmail、DeepSeek 和飞书，不读取浏览历史。自定义名称和链接保存在本机，恢复默认或卸载后删除，不上传。

@@ -213,7 +213,7 @@ Thumbnail cards read cached images directly from session storage. Missing images
 
 ## 1.7.0 — Frequent sites
 
-A shorter search field shares its row with five editable website shortcuts. Recommendations count visits in the past 30 days across up to 500 recently visited URLs, grouped by website origin. Each slot can be customized or reset to a recommendation. Custom names and URLs stay in local extension storage and sync between open manager pages on this device. The history permission is used only for local recommendations; no history is uploaded.
+A shorter search field shares its row with five editable website shortcuts. History recommendations introduced in 1.7.0 were removed in 1.7.4. Each slot can be customized or reset to a recommendation. Custom names and URLs stay in local extension storage and sync between open manager pages on this device. The extension no longer requests history permission.
 
 ## 1.7.1 — Icon shortcuts and drag-and-drop
 
@@ -226,3 +226,7 @@ Website shortcuts open in a new tab, keeping the tab manager open.
 ## 1.7.3
 
 Shortcut icons now prefer the actual favicon of an open page on the same website, then try the site’s favicon.ico and Chrome’s page-specific cache. Failed or slow sources fall back automatically. Icon requests may contact the original website or its icon CDN; no third-party icon lookup service is used.
+
+## 1.7.4
+
+Default shortcuts are Gmail, DeepSeek chat and Feishu’s homepage. History recommendations and the history permission have been removed. Existing custom shortcuts are retained; two additional slots remain available.
