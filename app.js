@@ -1,3 +1,4 @@
+import {resolveTabTitles,readDocumentTitle} from './tab-titles.js';
 import {scopeTabs,countCategories} from './tab-scope.js';
 import './metrics.js';
 import {titleHierarchy,titleSubject} from './title-rules.js';
@@ -22,10 +23,20 @@ function colorStyle(name, child = '') {
 }
 function toast(message) { $('#toast').textContent = message; $('#toast').hidden = false; clearTimeout(timer); timer = setTimeout(() => $('#toast').hidden = true, 4200); }
 function guard(fn) { return async (...args) => { try { await fn(...args); } catch(error) { toast(`操作未完成：${error.message}`); } }; }
+let refreshEpoch = 0;
 async function refresh() {
- if(live) { const all = await chrome.tabs.query({}); tabs = all.filter(t => t.url !== chrome.runtime.getURL('newtab.html') && t.url !== 'chrome://newtab/' && !t.url?.startsWith(chrome.runtime.getURL('newtab.html')+'?')); }
+ const epoch = ++refreshEpoch;
+ if(live) { const all = await chrome.tabs.query({}); if(epoch !== refreshEpoch)return; tabs = all.filter(t => t.url !== chrome.runtime.getURL('newtab.html') && t.url !== 'chrome://newtab/' && !t.url?.startsWith(chrome.runtime.getURL('newtab.html')+'?')); }
  render();
  if(query.trim()) scheduleSearch();
+ if(live) {
+  const resolved = await resolveTabTitles(tabs, tab => chrome.scripting.executeScript({target:{tabId:tab.id},func:readDocumentTitle}));
+  if(epoch !== refreshEpoch)return;
+  if(resolved.some((tab,index) => tab.title !== tabs[index]?.title)) {
+   tabs = resolved; render();
+   if(query.trim())scheduleSearch();
+  }
+ }
 }
 function filtered() {
  const dup = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));

@@ -199,3 +199,5 @@ Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese]
 ## License
 
 [MIT](LICENSE). You may use, modify, and distribute the code under the license terms.
+
+Generic tab titles such as “Docs” are checked against the loaded page’s actual title. Sleeping tabs are not reloaded.
