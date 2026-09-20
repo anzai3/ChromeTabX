@@ -1,75 +1,138 @@
-# Tab Matrix · 标签矩阵
+# ChromeTabX
 
-浅色 Chrome 新标签页扩展，无依赖、无需构建。白底深色文字、蓝色操作按钮，使用更大的字号与清晰的卡片布局。
+**A clearer home for your Chrome tabs.**
 
-## 安装
+**English** · [简体中文](README.zh-CN.md)
 
-1. 在 Chrome 地址栏打开 `chrome://extensions`。
-2. 开启右上角「开发者模式」。
-3. 点击「加载已解压的扩展程序」，选择本 README 所在的 ChromeTabX 文件夹。
-4. 新建标签页；如 Chrome 询问是否保留新的新标签页设置，选择保留。
+ChromeTabX replaces Chrome's new-tab page with a lightweight workspace for finding, organizing, and closing tabs. Search across open pages, browse automatic title-based categories, and remove duplicate URLs—all locally, without an account or cloud service.
 
-## 功能
+Also displayed in the extension as **Tab Matrix**. Built with vanilla JavaScript and Manifest V3. No dependencies or build step are required to load the extension.
 
-- 默认显示当前新标签页所在窗口的标签，可通过窗口筛选切换到所有窗口；点击标签切换到对应页面。
-- 搜索标题、URL 和已加载网页正文，展示正文命中片段，筛选窗口。
-- 单独关闭、固定/取消固定标签；卡片与列表切换。
-- 重复页预览、确认清理，跨窗口每个完整网址保留一个。
-- 快捷键 `/` 聚焦搜索；支持窄屏。
+## Features
 
-## 重复页判定
+- **Start with your current window.** New tabs show pages from their own window by default. Use the window selector to browse other windows or all windows.
+- **Search beyond titles.** Match titles, URLs, and readable text in loaded pages. Content matches include a short excerpt. Press `/` to focus search.
+- **Automatic category cloud.** Shared title keywords become categories. Larger groups can show up to three secondary categories, with consistent colors for browsing.
+- **Keep one copy of a URL.** Preview duplicate tabs before confirming cleanup across windows.
+- **Simple tab controls.** Open, close, pin, or unpin tabs, and switch between cards and a list.
+- **English and Simplified Chinese.** Follow Chrome's UI language by default, or switch instantly without losing search and filters.
+- **Optional Chrome metrics on macOS.** A local helper displays total Chrome memory and CPU usage.
 
-只合并完整 URL 相同的 HTTP/HTTPS 页面。保留查询参数、片段、协议差异，不以标题猜测内容是否相同；不同网址即使内容相同也不自动关闭。保留顺序：固定标签、窗口活动标签、最近使用标签。清理始终覆盖所有窗口，不受搜索和窗口筛选影响。确认时重新检查候选，避免关闭已经导航至其他页面的标签。关闭标签可能丢失表单或页面内状态，请先保存。没有自动后台关闭行为。
+## Install
 
-## 隐私与权限
+Requires **Chrome 121 or later**. The extension is installed from source; the optional resource monitor requires macOS and Python 3.
 
-使用 tabs、scripting 与 HTTP/HTTPS 网站访问权限。正文仅在输入关键词时按需读取，在网页内匹配后返回短片段，仅存于当前新标签页内存，不落盘、不上传。无远程脚本、统计或外部字体。以网站首字母生成图标。新标签页自身不计入管理列表。无痕窗口默认不启用，私密与普通标签不互相去重。
+1. [Download the source ZIP](https://github.com/anzai3/ChromeTabX/archive/refs/heads/main.zip) and extract it, or clone the repository:
+   ```sh
+   git clone https://github.com/anzai3/ChromeTabX.git
+   ```
+2. Open `chrome://extensions` in Chrome and enable **Developer mode**.
+3. Select **Load unpacked** and choose the folder containing `manifest.json`.
+4. Open a new tab. If Chrome asks whether to keep the new-tab replacement, confirm it.
 
-## 预览与验证
+After updating the source, click **Reload** on the extension card and open a new tab. If you cloned the repository, use `git pull --ff-only` to download updates.
 
-`npm test` 运行去重、搜索、分类和多语言测试。也可用 `python3 -m http.server 8765`，浏览 `http://localhost:8765/newtab.html`。普通网页展示明确标注的示例数据；真实标签管理只能在加载扩展后使用。
+## Everyday use
 
-Chrome 接口参考：[新标签页替换](https://developer.chrome.com/docs/extensions/develop/ui/override-chrome-pages)、[Tabs API](https://developer.chrome.com/docs/extensions/reference/api/tabs)、[Tab Groups API](https://developer.chrome.com/docs/extensions/reference/api/tabGroups)。
+Type in the search box to find a page, select a category to narrow the results, and click a page title to switch to that tab and its window. The window selector starts with the current window; choose **All windows** when needed.
 
-## 网页正文搜索
+Use **Remove duplicates** to review matching URLs before closing extras. Cleanup covers all windows, even when the visible results are filtered. Save unfinished forms before confirming a close.
 
-更新后到 `chrome://extensions` 点击扩展的「重新加载」，再打开新标签页。新增网站读取权限用于跨标签搜索；在扩展网站访问设置中允许访问所需网站。
+The language selector offers **System**, **简体中文**, and **English**. Unsupported languages fall back to English. Your selection stays on this device. Page titles, excerpts, and extracted category keywords remain in their original language.
 
-输入关键词即可同时搜索标题、网址和正文，300ms 防抖、最多 4 页并行。支持中文、英文不区分大小写和连续短语。点击结果标题切换至原标签。正文改变后点击「重新搜索正文」获取最新内容。
+## How it works
 
-正文搜索范围为主页面当前已加载的可见文字。Chrome 内部页、扩展页、Chrome 商店等受保护页面、权限受限页面以及被浏览器休眠丢弃的标签可能无法读取，界面显示未读取数量，仍可通过标题和网址找到。不会自动唤醒休眠页。iframe、PDF 阅读器、图片文字、未加载内容和封闭 Shadow DOM 不在正文搜索范围内。
+### Duplicate cleanup
 
-## 久未访问
+Only identical, complete HTTP/HTTPS URLs are grouped. Protocols, query strings, and fragments remain significant. Different URLs are never merged merely because their titles or content look similar. Private and normal browsing contexts are kept separate.
 
-代码保留按最近访问时间筛选的逻辑；当前简化界面没有独立「久未访问」入口。
+For each group, the extension prefers a pinned tab, then an active tab, then the most recently accessed tab. Candidates are checked again when cleanup is confirmed. There is no automatic background closing.
 
-使用 Chrome 121+ 提供的 `lastAccessed`（最近成为所在窗口活动标签的时间），不是网页发布时间，也不是访问频次。各窗口当前活动标签不计入；缺失或无效的时间标为未知并排除，不推算历史。浏览器恢复标签时以 Chrome 返回的时间为准，不新增权限或浏览历史采集。
+### Page-content search
 
-## 标题自动分类
+Search starts after a 300 ms pause and reads at most four pages concurrently. It matches continuous text, with case-insensitive English matching. Use **Search content again** after a page changes.
 
-读取所有打开标签的标题，使用 Intl.Segmenter 对中文和英文分词，过滤常见虚词、纯数字、首页/登录等通用词，再按标题中重复出现的词自动分组。优先选覆盖标签更多的关键词，多词命中时每个标签只分到一组；至少两页共享关键词才成组，其余放入「其他」。标题或标签集合变化后重新计算，不需要维护关键词规则，也不采集浏览历史或上传标题。
+Search reads loaded, visible text in the main frame. Protected browser pages, restricted sites, and discarded tabs may be unavailable; their titles and URLs can still match. The extension does not wake discarded tabs. Iframes, PDF viewers, image text, unloaded content, and closed Shadow DOM are outside the search scope.
 
-这是基于共同词的分组，不是语义模型；同义词不会自动合并，站点名称也可能成为分类名称。
+### Title-based categories
 
-## 两级分类与卡片视图
+Local word segmentation extracts shared keywords and filters common filler words, numeric fragments, and known site suffixes. At least two tabs must share a keyword to form a primary category; remaining tabs appear under Other. Each tab has one primary category.
 
-默认用卡片显示网页标题，点击打开对应 Tab，保留关闭、固定、重复标记及正文命中片段；右上角可切换列表。
-一级分类达到 6 个 Tab 时，自动提取组内至少出现两次、但不是所有标题都有的二级关键词，例如「Mico 印巴」「Mico 月会」。左侧同时显示两级入口，一级看整组，二级看共同包含父词与子词的标签。同一个 Tab 可以匹配多个二级分类，因此子分类数量不可直接相加。规则完全本地运行。
+Groups with at least six tabs can expose up to three secondary categories based on additional shared keywords. Secondary categories can overlap, so their counts should not be added together. Categories are computed from all managed tabs, while the window filter limits displayed results. This is keyword grouping, not AI semantic classification.
 
-## Chrome CPU / 内存（macOS）
+### Last-access information
 
-普通 Chrome 无可用的浏览器进程统计扩展 API，本功能使用 Native Messaging 本机辅助程序。运行 `python3 native/install.py 扩展ID` 安装，扩展 ID 可在 chrome://extensions 开发者模式查看；然后重新加载扩展并打开新标签页。仅允许这个扩展连接，仅支持读取 Chrome 进程汇总，不执行传入命令、不上传数据。
+Last-access labels use Chrome's `lastAccessed` timestamp, not publication dates or visit frequency. Unknown timestamps are not estimated. The code retains inactivity-filtering logic, but the simplified interface currently has no dedicated inactive-tabs navigation entry.
 
-每 10 秒及关闭标签后更新。内存为所有 Google Chrome 进程 RSS 总和，可能重复计算共享内存，与活动监视器不完全一致；CPU 为约 1 秒窗口的累计进程 CPU 时间增量，100% 表示占满一个核心。统计所有用户配置和窗口，非当前配置专属。关闭标签后的差值包含其他页面同期变化，不保证下降。
+## Optional macOS memory and CPU monitor
 
-本机采集文件位于 ~/Library/Application Support/TabMatrixMetrics，注册文件位于 ~/Library/Application Support/Google/Chrome/NativeMessagingHosts/com.tabmatrix.metrics.json。删除这两个位置的本功能文件可卸载。仅支持 macOS，未连接显示破折号。
+Tab management works without the helper. To enable metrics:
 
-## 界面语言
+1. Copy the extension ID from `chrome://extensions`.
+2. Run from the repository folder, replacing `YOUR_EXTENSION_ID`:
+   ```sh
+   python3 native/install.py YOUR_EXTENSION_ID
+   ```
+3. Reload the extension and open a new tab.
 
-支持简体中文与 English，默认跟随 Chrome 界面语言（通常随系统设置），非中文回退英文。左侧语言选择可手动覆盖或恢复跟随系统，设置保存在本机，刷新后保留；切换即时生效，保留搜索和筛选。网页原始标题、正文及自动提取的分类词保持原文。
+The helper uses Native Messaging and permits only the extension ID supplied during installation. It reads local Chrome process statistics; it does not accept arbitrary commands or upload measurements.
 
-公共能力已提取为 [@startups/app-i18n](packages/app-i18n/README.md)，接入指南与版本记录见该目录。现有旧文案由独立兼容层处理，新应用使用固定翻译键。个人 skill 不包含在公开仓库中。
+- **Memory:** total resident memory (RSS) across Google Chrome processes. Shared pages may be counted more than once.
+- **CPU:** approximately one second of sampled process CPU time. 100% represents one fully occupied core; multiple cores can exceed 100%.
+- **Scope:** all local Google Chrome windows, profiles, and helper processes—not just the selected window.
+- **Refresh:** every 10 seconds and after tab closures. Other activity and retained caches mean closing a tab does not guarantee either number will fall.
 
-## 开源许可
+A disconnected monitor shows dashes. Check that the helper was installed with the current extension ID, then reload the extension. Other platforms do not currently have a metrics helper.
 
-采用 [MIT License](LICENSE)。
+To uninstall the helper, remove its files from `~/Library/Application Support/TabMatrixMetrics` and its registration file at `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/com.tabmatrix.metrics.json`.
+
+## Privacy and permissions
+
+No account, analytics, remote scripts, external fonts, or cloud processing are used. Search excerpts stay in the new-tab page's memory; they are not persisted or uploaded. Language preferences are stored locally.
+
+| Permission | Purpose |
+| --- | --- |
+| `tabs` | Read tab titles and URLs; manage tabs across windows. |
+| `scripting` | Search readable page text on demand. |
+| HTTP/HTTPS host access | Allow content searches on permitted websites. |
+| `nativeMessaging` | Connect to the optional local metrics helper. |
+
+Incognito access is not enabled by default. The extension's own new-tab pages are excluded from the managed tab list.
+
+## Development
+
+Use a recent Node.js version with its built-in test runner:
+
+```sh
+npm test
+```
+
+For a browser preview with sample data:
+
+```sh
+python3 -m http.server 8765
+```
+
+Open `http://localhost:8765/newtab.html`. Preview mode cannot manage real tabs or display live Chrome metrics; load the extension for those features.
+
+| File or directory | Responsibility |
+| --- | --- |
+| `app.js`, `newtab.html`, `style.css` | Tab manager UI and interaction. |
+| `core.js`, `title-rules.js` | Duplicate detection, access labels, title categories. |
+| `content-search.js` | On-demand page-content search. |
+| `background.js` | Extension action handling. |
+| `metrics.js`, `native/` | Resource display and optional macOS helper. |
+| `packages/app-i18n/` | Reusable language runtime and DOM adapter. |
+| `tests/` | Behavior and regression tests. |
+
+The [i18n package guide](packages/app-i18n/README.md) covers its API and integration. It is a local, versioned package, not a published npm dependency. The extension currently keeps a separate compatibility layer for older UI strings.
+
+## Contributing
+
+Bug reports and focused pull requests are welcome. Include reproduction steps, Chrome/OS versions, and expected behavior. Use sample titles and URLs when sharing examples; avoid posting private browsing data.
+
+Run `npm test` for behavior changes. Keep the [English](README.md) and [Chinese](README.zh-CN.md) introductions aligned when changing features or installation instructions.
+
+## License
+
+[MIT](LICENSE). You may use, modify, and distribute the code under the license terms.
