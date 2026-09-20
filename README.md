@@ -256,3 +256,7 @@ Shortcut spacing is more compact: 20 px icons in 32 px targets with 4 px gaps, a
 ## 1.7.11
 
 Drag shortcut icons onto another slot to reorder them. The order is saved locally and shared by open manager pages. External URL drops still add or replace a shortcut.
+
+## 1.7.12
+
+Shortcuts sit in a shared bookmark tray with uniform, centered icon cells. Favicons and fallback symbols align vertically.
