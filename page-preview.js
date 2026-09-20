@@ -9,7 +9,8 @@ export function extractPagePreview() {
 export function createPreviewReader(read, now = Date.now) {
  const cache = new Map();
  return async tab => {
-  if (!/^https?:\/\//.test(tab.url || '') || tab.discarded) return {state:'unavailable'};
+  if (!/^https?:\/\//.test(tab.url || '')) return {state:'unavailable',reason:'protected'};
+  if (tab.discarded) return {state:'unavailable',reason:'discarded'};
   const key = `${tab.id}:${tab.url}`;
   const old = cache.get(key);
   if(old && now()-old.time<60000)return old.promise;
@@ -18,8 +19,8 @@ export function createPreviewReader(read, now = Date.now) {
    try {
     const frames = await Promise.race([read(tab),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('timeout')),5000);})]);
     const data = frames.find(f=>f.frameId===0)?.result;
-    return data?.url===tab.url && (data.summary || data.excerpt) ? {state:'done',summary:String(data.summary||'').slice(0,180),excerpt:String(data.excerpt||'').slice(0,1400)} : {state:'unavailable'};
-   } catch {return {state:'unavailable'};} finally {clearTimeout(timer);}
+    return data?.url===tab.url && (data.summary || data.excerpt) ? {state:'done',summary:String(data.summary||'').slice(0,180),excerpt:String(data.excerpt||'').slice(0,1400)} : {state:'unavailable',reason:data?.url===tab.url?'empty':'changed'};
+   } catch(error) {return {state:'unavailable',reason:/permission|access|cannot access/i.test(error.message||'')?'permission':error.message==='timeout'?'timeout':'unreadable'};} finally {clearTimeout(timer);}
   })();
   const entry={time:now(),promise};
   cache.set(key,entry);
