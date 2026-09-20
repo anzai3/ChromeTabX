@@ -6,6 +6,7 @@ const $ = selector => document.querySelector(selector);
 const live = !!globalThis.chrome?.tabs?.query;
 let tabs = [], view = 'all', selectedWindow = 'all', query = '', list = false;
 let inactiveDays = 7;
+let currentWindowId = null;
 let titleGroups = new Map(), hierarchy = {children:new Map(),membership:new Map()};
 let searchEpoch = 0, searchTimer, searchBusy = false;
 const bodyMatches = new Map();
@@ -23,7 +24,7 @@ function toast(message) { $('#toast').textContent = message; $('#toast').hidden 
 function guard(fn) { return async (...args) => { try { await fn(...args); } catch(error) { toast(`操作未完成：${error.message}`); } }; }
 async function refresh() {
  if(live) { const all = await chrome.tabs.query({}); tabs = all.filter(t => t.url !== chrome.runtime.getURL('newtab.html') && t.url !== 'chrome://newtab/' && !t.url?.startsWith(chrome.runtime.getURL('newtab.html')+'?')); }
- const wins = [...new Set(tabs.map(t => t.windowId))];
+ const wins = [...new Set([...(currentWindowId === null ? [] : [currentWindowId]), ...tabs.map(t => t.windowId)])];
  if(selectedWindow !== 'all' && !wins.includes(Number(selectedWindow))) selectedWindow = 'all';
  $('#window-filter').innerHTML = '<option value="all">所有窗口</option>'+wins.map(id => `<option value="${id}">窗口 ${wins.indexOf(id)+1}</option>`).join('');
  $('#window-filter').value = selectedWindow;
@@ -60,7 +61,6 @@ function render() {
  $('#search-status').hidden = !query.trim();
  $('#search-status-text').textContent = searchBusy ? `正在搜索网页正文… ${searched.length}/${tabs.length}` : `找到 ${filtered().length} 个标签（当前筛选） · 已搜索 ${searched.filter(r=>r.state==='done').length} 页正文 · ${searched.filter(r=>r.state==='unavailable').length} 页正文不可读取，仅匹配标题和网址`;
  const dupeIds = duplicateIds(tabs), dupSet = new Set(duplicateGroups(tabs).flatMap(g => g.map(t => t.id)));
- const wins = [...new Set(tabs.map(t => t.windowId))];
  $('#dedupe-count').textContent = dupeIds.length;
  $('#dedupe').disabled = !dupeIds.length || closing;
  const categoryNames=[...new Set(titleGroups.values())].sort((a,b)=>a==='其他'?1:b==='其他'?-1:tabs.filter(t=>titleGroups.get(t.id)===b).length-tabs.filter(t=>titleGroups.get(t.id)===a).length);
@@ -94,6 +94,9 @@ $('#confirm-dialog').addEventListener('close',guard(async()=>{
 }));
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)&&!document.querySelector('dialog[open]')){event.preventDefault();$('#search').focus();}});
 async function init(){
+ // Resolve the window containing this new-tab page once; later refreshes preserve the user's filter.
+ currentWindowId = live ? (await chrome.windows.getCurrent()).id : 1;
+ selectedWindow = String(currentWindowId);
  if(live){let debounce;const update=()=>{clearTimeout(debounce);debounce=setTimeout(guard(refresh),120);};for(const name of ['onCreated','onRemoved','onUpdated','onMoved','onAttached','onDetached','onActivated'])chrome.tabs[name].addListener(update);}
  else{tabs=demoRows.map(([title,url],i)=>{return{id:i+1,title,url,windowId:i>8?2:1,pinned:i===0,lastAccessed:Date.now()-[0.1,2,9,35,15,0.5,60,4,8,1,31,3][i]*86400000};});$('#demo-banner').hidden=false;}
  await refresh();
