@@ -1,6 +1,6 @@
 # ChromeTabX
 
-**Too many tabs open? Find the page you need—and close the extra copies.**
+**Manage more tabs with less effort. Find pages faster. Give your computer room to breathe.**
 
 **English** · [简体中文](README.zh-CN.md)
 
@@ -9,6 +9,40 @@ ChromeTabX is a **Chrome extension that turns your new-tab page into a searchabl
 ![ChromeTabX explained: turn crowded tabs into a searchable new-tab dashboard with topic categories and duplicate cleanup.](docs/images/chrometabx-overview.png)
 
 *Feature illustration, not a screenshot of the extension.*
+
+## More tabs, less time lost
+
+Keep the pages you need without losing track of them. ChromeTabX brings scattered tabs into one searchable view so you can spend less time hunting for a page and get back to your work.
+
+Closing unneeded pages—especially those running video or scripts—can reduce Chrome’s memory and CPU usage and help your computer stay responsive. The benefit depends on the pages you close; fewer tabs do not guarantee a speed increase. The optional macOS monitor lets you observe Chrome’s actual resource usage.
+
+## How everything fits together
+
+```mermaid
+flowchart TD
+    A[Many open tabs across Chrome windows] --> B[Open a new tab: ChromeTabX]
+    B --> C[Find the page you need]
+    B --> D[Browse and organize]
+    B --> E[Reduce tab clutter]
+    C --> C1[Search titles, URLs and readable page text]
+    C1 --> C2[Click to return to the original tab]
+    D --> D1[Current window by default / switch windows]
+    D --> D2[Topic categories / up to 3 subcategories]
+    D --> D3[Card or list view / pin important tabs]
+    E --> E1[Review duplicate URLs / keep one copy]
+    E --> E2[Close pages you no longer need]
+    C2 --> F[Less time searching / more focus]
+    D1 --> F
+    D2 --> F
+    E1 --> G[Fewer unnecessary pages]
+    E2 --> G
+    G --> H[May reduce memory and CPU usage]
+    B --> I[Optional macOS resource monitor]
+    I --> J[Observe total Chrome memory and CPU]
+    B --> K[Settings: language and optional donations]
+```
+
+*This is a map of the current product. Resource savings vary; the extension does not automatically close tabs or promise a fixed speed improvement.*
 
 ## Does this sound familiar?
 
