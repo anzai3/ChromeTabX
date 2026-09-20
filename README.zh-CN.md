@@ -148,7 +148,7 @@ python3 -m http.server 8765
 
 ## 捐款入口模块
 
-可复用的 [app-support 模块](packages/app-support/README.md) 在设置中提供可选捐款入口。在 `support-config.js` 填入所有者核验的 HTTPS 收款链接后启用。目前尚未配置，入口保持隐藏。模块包含中英文感谢文案，不处理或追踪支付。
+可复用的 [app-support 模块](packages/app-support/README.md) 在设置中提供可选捐款入口。在 `support-config.js` 填入所有者核验的 HTTPS 收款链接，或加密货币收款信息（币种、网络、地址及可选 Memo/Tag）后启用。地址支持一键复制，无需连接钱包。目前尚未配置，入口保持隐藏。模块包含中英文感谢文案，不处理或追踪支付。
 
 ## 参与贡献
 

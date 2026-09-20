@@ -2,7 +2,7 @@
 
 **English** · [简体中文](#中文)
 
-A dependency-free donation entry for Web, Chrome extensions, and Electron UI. Version 0.1.0. No payment processing, analytics, donor database, or backend required.
+A dependency-free donation entry for Web, Chrome extensions, and Electron UI. Version 0.2.0. No payment processing, analytics, donor database, or backend required.
 
 ```js
 import {mountSupport} from './index.js';
@@ -29,3 +29,11 @@ ChromeTabX 在 `support-config.js` 配置真实收款链接，入口位于设置
 `supportModel` 提供与框架无关的数据，`mountSupport` 提供可选 DOM 组件；可直接订阅 app-i18n 的语言变化。感谢文案是对支持者的统一致谢，不将点击视为支付成功。展示捐款人名单需要真实记录和本人同意。
 
 运行 `npm pack` 可供其他项目安装固定版本，尚未发布 npm。原生 App 需单独适配。目前仅 ChromeTabX 接入，仍待提供收款链接后验证实际跳转。
+
+## Crypto receiving addresses / 加密货币收款
+
+Configure `crypto: [{asset, network, address, memo?}]` alongside an optional `url`. Use the exact owner-confirmed public receiving details. Multiple destinations are supported. Never include private keys or seed phrases. No blockchain SDK or wallet connection is required.
+
+Each destination shows its asset, network, full selectable address, copy button, and optional required memo/tag. Missing Clipboard API access falls back to a manual-copy message. Only configuration completeness is checked: network compatibility, address checksum, ownership and receipt of funds are not verified. A click or copied address is never treated as a donation. Unconfigured entries stay hidden.
+
+在 `support-config.js` 的 `crypto` 数组中配置收款币种、网络、地址和可选 Memo/Tag。展示完整地址和复制按钮；没有地址时不显示入口。只校验配置完整性，不验证链上地址、归属和到账情况。感谢文案不代表已收到转账。

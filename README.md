@@ -148,7 +148,7 @@ The [i18n package guide](packages/app-i18n/README.md) covers its API and integra
 
 ## Donation entry module
 
-The reusable [app-support module](packages/app-support/README.md) provides an optional donation entry under Settings. Set the owner’s verified HTTPS donation URL in `support-config.js` to enable it. No destination is configured yet, so the entry stays hidden. It includes English/Chinese acknowledgements and does not process or track payments.
+The reusable [app-support module](packages/app-support/README.md) provides an optional donation entry under Settings. Set the owner’s verified HTTPS donation URL or crypto receiving details (asset, network, address, optional memo/tag) in `support-config.js` to enable it. Crypto addresses have a copy button; no wallet connection is requested. No destination is configured yet, so the entry stays hidden. It includes English/Chinese acknowledgements and does not process or track payments.
 
 ## Contributing
 
