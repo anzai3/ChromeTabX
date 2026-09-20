@@ -66,3 +66,5 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 #hover-preview{position:fixed;z-index:30;width:min(420px,calc(100vw - 24px));height:290px;padding:20px;background:#fff;border:1px solid #cbd8ea;border-radius:14px;box-shadow:0 12px 40px #152b4826;overflow:auto;color:#17243b}#hover-preview strong{display:block;font-size:16px;overflow-wrap:anywhere}#hover-preview small{display:block;margin-top:8px;color:#64748b;font-size:11px}#hover-preview p{font-size:13px;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
 
 #content .page-summary:empty{display:none}
+
+#refresh-metrics .refresh-icon{display:inline-block;transform-origin:center}#refresh-metrics.is-loading .refresh-icon{animation:metrics-spin .8s linear infinite}#refresh-metrics.is-loading{cursor:wait}@keyframes metrics-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){#refresh-metrics.is-loading .refresh-icon{animation:none}}

@@ -6,6 +6,8 @@ export async function updateMetrics() {
  if(busy || document.hidden)return;
  busy=true;
  $('refresh-metrics').disabled=true;
+ $('refresh-metrics').classList.add('is-loading');
+ $('refresh-metrics').setAttribute('aria-busy','true');
  try {
   if(!live)throw Error('预览模式');
   const data=await chrome.runtime.sendNativeMessage('com.tabmatrix.metrics',{command:'metrics'});
@@ -15,7 +17,12 @@ export async function updateMetrics() {
  } catch(error) {
   $('chrome-memory').textContent='—';
   $('chrome-memory').title=!extensionPage?'预览模式 · 无实时数据':!live?'请重新加载扩展以启用本机通信':'本机采集未连接';
- } finally {busy=false;$('refresh-metrics').disabled=false;}
+ } finally {
+  busy=false;
+  $('refresh-metrics').disabled=false;
+  $('refresh-metrics').classList.remove('is-loading');
+  $('refresh-metrics').setAttribute('aria-busy','false');
+ }
 }
 $('refresh-metrics').onclick=updateMetrics;
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateMetrics();});
