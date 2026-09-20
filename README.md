@@ -127,6 +127,10 @@ Open `http://localhost:8765/newtab.html`. Preview mode cannot manage real tabs o
 
 The [i18n package guide](packages/app-i18n/README.md) covers its API and integration. It is a local, versioned package, not a published npm dependency. The extension currently keeps a separate compatibility layer for older UI strings.
 
+## Donation entry module
+
+The reusable [app-support module](packages/app-support/README.md) provides an optional donation entry under Settings. Set the owner’s verified HTTPS donation URL in `support-config.js` to enable it. No destination is configured yet, so the entry stays hidden. It includes English/Chinese acknowledgements and does not process or track payments.
+
 ## Contributing
 
 Bug reports and focused pull requests are welcome. Include reproduction steps, Chrome/OS versions, and expected behavior. Use sample titles and URLs when sharing examples; avoid posting private browsing data.

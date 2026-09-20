@@ -127,6 +127,10 @@ python3 -m http.server 8765
 
 [多语言模块指南](packages/app-i18n/README.md) 包含接口和接入方式。它是本地版本化模块，尚未发布到 npm。扩展目前为旧界面文案保留了单独兼容层。
 
+## 捐款入口模块
+
+可复用的 [app-support 模块](packages/app-support/README.md) 在设置中提供可选捐款入口。在 `support-config.js` 填入所有者核验的 HTTPS 收款链接后启用。目前尚未配置，入口保持隐藏。模块包含中英文感谢文案，不处理或追踪支付。
+
 ## 参与贡献
 
 欢迎提交问题和范围明确的 Pull Request。请提供复现步骤、Chrome 与操作系统版本，以及预期行为。示例使用虚构标题和网址，避免提交个人浏览数据。
