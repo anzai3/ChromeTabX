@@ -94,11 +94,11 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 @media(max-width:700px){.toolbar .search{max-width:none}#shortcuts{flex-basis:100%;grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 /* Bookmark-style icons with unobtrusive, keyboard-accessible edit controls. */
-#shortcuts{display:flex;flex:0 0 auto;gap:12px;align-items:center}.toolbar .search{max-width:560px}
-#shortcuts .shortcut{position:relative;overflow:visible;width:44px;height:44px;border:1px solid transparent;background:transparent;justify-content:center}
-#shortcuts .shortcut .shortcut-link{position:relative;display:grid;place-items:center;flex:none;width:40px;height:40px;padding:8px;font-size:22px;border-radius:8px}
-.shortcut-link img{position:absolute;width:24px;height:24px;object-fit:contain}.shortcut-link:hover{background:#e8eef8}
-#shortcuts .shortcut>button:last-child:not(.shortcut-link){position:absolute;right:-7px;top:-6px;opacity:0;width:20px;height:20px;padding:0;display:grid;place-items:center;font-size:12px;background:white;border:1px solid var(--line);border-radius:50%}
+#shortcuts{display:flex;flex:0 0 auto;gap:4px;align-items:center}.toolbar .search{max-width:560px}
+#shortcuts .shortcut{position:relative;overflow:visible;width:32px;height:32px;border:1px solid transparent;background:transparent;justify-content:center}
+#shortcuts .shortcut .shortcut-link{position:relative;display:grid;place-items:center;flex:none;width:32px;height:32px;padding:6px;font-size:20px;border-radius:6px}
+.shortcut-link img{position:absolute;width:20px;height:20px;object-fit:contain}.shortcut-link:hover{background:#e8eef8}
+#shortcuts .shortcut>button:last-child:not(.shortcut-link){position:absolute;right:-3px;top:-6px;opacity:0;width:16px;height:16px;padding:0;display:grid;place-items:center;font-size:12px;background:white;border:1px solid var(--line);border-radius:50%}
 #shortcuts .shortcut:hover>button:last-child,#shortcuts .shortcut:focus-within>button:last-child{opacity:1}
 #shortcuts .shortcut.drag-over{border:1px dashed var(--blue);background:#dce9ff;transform:scale(1.08)}
 .shortcut-feedback{font-size:12px;color:var(--muted)}.shortcut-feedback:empty{display:none}

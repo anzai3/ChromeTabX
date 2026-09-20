@@ -248,3 +248,7 @@ Shortcut icons also read the website homepage’s declared favicon and touch-ico
 ## 1.7.9
 
 Shortcut icons align to the right. Existing tab icons and Chrome’s page-specific cache load before network discovery. Discovery reads the actual bookmark URL rather than always the homepage; newly reported tab icons refresh matching shortcuts. Sites that block icon access can still show a fallback.
+
+## 1.7.10
+
+Shortcut spacing is more compact: 20 px icons in 32 px targets with 4 px gaps, aligned to the right.
