@@ -64,3 +64,5 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 
 #content .page-summary{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;color:#64748b;margin:12px 0 8px;min-height:20px}.preview-button{font-size:12px;padding:4px 9px}#page-preview{width:620px;max-width:calc(100vw - 32px);max-height:80dvh;overflow:auto}#preview-title{font-size:19px;overflow-wrap:anywhere}#preview-url{color:#64748b;font-size:12px;overflow-wrap:anywhere}#preview-note{color:#64748b}#preview-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}
 #hover-preview{position:fixed;z-index:30;width:min(420px,calc(100vw - 24px));height:290px;padding:20px;background:#fff;border:1px solid #cbd8ea;border-radius:14px;box-shadow:0 12px 40px #152b4826;overflow:auto;color:#17243b}#hover-preview strong{display:block;font-size:16px;overflow-wrap:anywhere}#hover-preview small{display:block;margin-top:8px;color:#64748b;font-size:11px}#hover-preview p{font-size:13px;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
+
+#content .page-summary:empty{display:none}

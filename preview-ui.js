@@ -11,7 +11,7 @@ function labels(){
  document.getElementById('preview-close').setAttribute('aria-label',c.close);
  document.getElementById('preview-open').textContent=c.open;
  document.querySelectorAll('[data-preview]').forEach(b=>b.textContent=c.preview);
- document.querySelectorAll('[data-summary-state]').forEach(n=>{if(n.dataset.summaryState!=='done')n.textContent=c[n.dataset.summaryState];});
+ document.querySelectorAll('[data-summary-state]').forEach(n=>{if(n.dataset.summaryState!=='done')n.textContent='';});
 }
 async function getTab(id,node){return live?chrome.tabs.get(id):{id,url:node.dataset.url,title:node.dataset.title};}
 async function populate(node){
@@ -21,8 +21,8 @@ async function populate(node){
   if(!node.isConnected || node.dataset.url!==url)return;
   if(live && (await chrome.tabs.get(tab.id)).url!==url)return;
   node.dataset.summaryState=data.state==='done'?'done':'unavailable';
-  node.textContent=data.state==='done'?data.summary:copy().unavailable;
- }catch{if(node.isConnected){node.dataset.summaryState='unavailable';node.textContent=copy().unavailable;}}
+  node.textContent=data.state==='done'?data.summary:'';
+ }catch{if(node.isConnected){node.dataset.summaryState='unavailable';node.textContent='';}}
 }
 const queue=[];let active=0;
 function drain(){while(active<2&&queue.length){const node=queue.shift();if(!node.isConnected)continue;active++;populate(node).finally(()=>{active--;drain();});}}
@@ -30,7 +30,7 @@ const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(
 const watched=new Set();
 function discover(){
  for(const node of watched)if(!node.isConnected){observer.unobserve(node);watched.delete(node);}
- document.querySelectorAll('[data-summary]').forEach(node=>{if(watched.has(node))return;watched.add(node);node.textContent=copy().loading;observer.observe(node);});
+ document.querySelectorAll('[data-summary]').forEach(node=>{if(watched.has(node))return;watched.add(node);node.textContent='';observer.observe(node);});
  labels();
 }
 new MutationObserver(discover).observe(document.getElementById('content'),{childList:true});

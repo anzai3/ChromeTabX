@@ -1,8 +1,8 @@
 // Runs in an isolated page context. No full-page storage, screenshots, or network requests.
 export function extractPagePreview() {
  const clean = text => String(text || '').replace(/\s+/g, ' ').trim();
- const description = clean(document.querySelector('meta[name="description"]')?.content || document.querySelector('meta[property="og:description"]')?.content);
- const body = clean((document.querySelector('main,article') || document.body)?.innerText).slice(0,1400);
+ const description = clean(document.querySelector('meta[name="description"]')?.content) || clean(document.querySelector('meta[property="og:description"]')?.content);
+ const body = (clean(document.querySelector('main,article')?.innerText) || clean(document.body?.innerText)).slice(0,1400);
  return {url:location.href, summary:(description || body).slice(0,180), excerpt:body || description.slice(0,1400)};
 }
 
@@ -21,7 +21,9 @@ export function createPreviewReader(read, now = Date.now) {
     return data?.url===tab.url && (data.summary || data.excerpt) ? {state:'done',summary:String(data.summary||'').slice(0,180),excerpt:String(data.excerpt||'').slice(0,1400)} : {state:'unavailable'};
    } catch {return {state:'unavailable'};} finally {clearTimeout(timer);}
   })();
-  cache.set(key,{time:now(),promise});
+  const entry={time:now(),promise};
+  cache.set(key,entry);
+  promise.then(result=>{if(result.state!=='done' && cache.get(key)===entry)cache.delete(key);});
   if(cache.size>300)cache.delete(cache.keys().next().value);
   return promise;
  };
