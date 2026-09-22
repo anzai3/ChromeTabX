@@ -260,3 +260,7 @@ Drag shortcut icons onto another slot to reorder them. The order is saved locall
 ## 1.7.12
 
 Shortcuts sit in a shared bookmark tray with uniform, centered icon cells. Favicons and fallback symbols align vertically.
+
+## 1.7.13
+
+The sidebar brand reads ChromeTabX above Tab Manager in both interface languages.
