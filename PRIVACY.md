@@ -6,6 +6,8 @@ ChromeTabX is an open-source tab manager maintained at https://github.com/anzai3
 
 ## Information processed on your device
 
+- ChromeTabX foreground usage is stored locally as today’s duration, total duration and the latest counted timestamp, without website-level activity logs. Uninstalling the extension removes these aggregates.
+
 - Default shortcuts are Gmail, DeepSeek and Feishu. No browsing history is read for recommendations. Custom shortcut names and URLs are saved locally until reset or uninstalled, and are not uploaded.
 
 

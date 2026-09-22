@@ -76,7 +76,7 @@ ChromeTabX 把新标签页变成已打开网页的搜索和管理页面。输入
 | favicon | Display Chrome-provided website icons for the five local shortcuts. |
 | tabs | List open tabs across windows, read titles/URLs/status, switch to the chosen tab, and close tabs or confirmed duplicate URLs. |
 | scripting | Read document titles, headings, metadata and readable text from existing tabs for local search, summaries and improved titles. |
-| storage | Save custom website shortcuts locally; no server upload. |
+| storage | Save custom website shortcuts and aggregate ChromeTabX foreground usage locally; no server upload. |
 | nativeMessaging | Communicate with the separately installed optional local macOS Chrome-resource helper for the memory display. The extension works without the helper. |
 | <all_urls> | Support the user's open HTTP/HTTPS pages across arbitrary sites: read content for search/title extraction. There is no fixed domain list because users manage tabs from different sites. |
 

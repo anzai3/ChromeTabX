@@ -268,3 +268,7 @@ The sidebar brand reads ChromeTabX above Tab Manager in both interface languages
 ## 1.7.14
 
 Web preview uses a nonblocking header loading indicator. Hover delay is 150 ms and the iframe starts before live tab metadata finishes loading. Preview stays open across card rerenders and pointer exits; close it with ×, Escape, an outside click, or scroll. Re-entering the same preview keeps the iframe rather than loading it again. Site response times and embedding restrictions still apply.
+
+## 1.8.0
+
+Settings now shows today’s and total ChromeTabX foreground usage, starting with this update. Aggregates are stored locally, overlapping manager intervals are deduplicated, and gaps longer than 15 seconds are excluded to avoid counting sleep. Updates are saved approximately every five seconds; abrupt closure may lose the latest interval. This is manager usage, not per-website browsing time.
