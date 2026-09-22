@@ -264,3 +264,7 @@ Shortcuts sit in a shared bookmark tray with uniform, centered icon cells. Favic
 ## 1.7.13
 
 The sidebar brand reads ChromeTabX above Tab Manager in both interface languages.
+
+## 1.7.14
+
+Web preview uses a nonblocking header loading indicator. Hover delay is 150 ms and the iframe starts before live tab metadata finishes loading. Preview stays open across card rerenders and pointer exits; close it with ×, Escape, an outside click, or scroll. Re-entering the same preview keeps the iframe rather than loading it again. Site response times and embedding restrictions still apply.

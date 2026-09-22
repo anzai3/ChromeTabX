@@ -115,3 +115,7 @@ nav button.subcategory{margin-left:12px;border-left:2px solid #cbd9ef;border-rad
 #shortcuts .shortcut{flex:0 0 32px;border:0;align-items:center}
 #shortcuts .shortcut-link>span{grid-area:1/1;width:20px;height:20px;display:flex;align-items:center;justify-content:center;line-height:1}
 #shortcuts .shortcut-link>[hidden]{display:none}
+
+/* Loading is a small status badge, never a veil over readable page content. */
+.web-preview-loading{position:static;inset:auto;flex:none;max-width:45%;padding:6px 10px;border:1px solid #dbe5f4;border-radius:8px;background:#fff;box-shadow:0 1px 4px #17243b12;font-size:12px;gap:7px}
+.web-preview-loading .web-preview-spinner{width:16px;height:16px;border-width:2px}
